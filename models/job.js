@@ -1,39 +1,65 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const Jobs = new mongoose.Schema(
-  {
-    name: { type: String, required: true },
-    location: { type: String, required: true },
-    recruter: { 
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Users'
-    },
-    year:{ type: String},
-    time_start:{ type: String},
-    time_work:{ type: String},
-    isActive: { type: Boolean, default:true },
-    cv:[
-        {
-            path_CV:{ type: String},
-            owner:{ 
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Users'
-            }
-        }   
-    ],
-    description:{ type: String},
-    type:{ type: String},
-    diplomat:{ type: String},
-    comments:[
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Comments",
-        },
-    ]
+const candidateSchema = new mongoose.Schema({
+  id_condidate: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Users',
   },
-  {
-    timestamps: true,
+  checked_before:false,
+  status: {
+    type: String,
+    enum: ['refused', 'accepted','pending'],
+    default:"submitted"
   }
-);
+});
 
-module.exports = mongoose.model("Jobs", Jobs);
+const jobSchema = new mongoose.Schema({
+  job_title: {
+    type: String,
+    required: true
+  },
+  work_type: {
+    type: String,
+    required: true
+  },
+  job_location: {
+    type: String,
+    required: true
+  },
+  job_type: {
+    type: String,
+    required: true
+  },
+  job_deadline_apply: {
+    type: Date,
+    required: true
+  },
+  with_cover: {
+    type: Boolean,
+    required: true
+  },
+  description_job: {
+    type: String,
+    required: true
+  },
+  status: {
+    type: String,
+    enum: [
+      "posted",
+      "closed",
+      "expired",
+      "archived"
+    ],
+    default: "posted"
+  },
+  company_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Company',
+    required: true
+  },
+  candidates: [candidateSchema]
+});
+
+const Job = mongoose.model('Job', jobSchema);
+
+module.exports = Job;

@@ -1,4 +1,4 @@
-const Job = require("../models/job");
+const Job = require("../models/company");
 const Comment = require("../Models/Comment");
 const httpError = require("http-errors");
 

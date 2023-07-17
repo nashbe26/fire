@@ -4,9 +4,15 @@ const userService = require("../services/user.service");
 // calling get user service
 
 const getUsers = asyncHandler(async (req, res) => {
-  let user_id = req.user;
-  const user = await userService.getUserById(user_id);
-  res.status(200).json(user);
+  let {user} = req.user;
+  const response = await userService.getUsers(user._id)
+  res.status(200).json(response);
+});
+
+const deleteUser = asyncHandler(async (req, res) => {
+  let {user} = req.user;
+  const response = await userService.deleteUser(user._id)
+  res.status(200).json({response});
 });
 
 const getUserById = asyncHandler(async (req, res) => {
@@ -61,7 +67,7 @@ const sendToRec = asyncHandler(async (req, res) => {
 // calling update user sevcice
 
 const updateUser = asyncHandler(async (req, res) => {
-  let user_id = req.user;
+  let user_id = req.user.user._id;
 
   let users = await userService.updateUser(user_id, req.body);
   res.status(200).json(users);
@@ -95,5 +101,6 @@ module.exports = {
   sendCV,
   sendToRec,
   updateUserViews,
-  getUserById
+  getUserById,
+  deleteUser
 };

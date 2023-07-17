@@ -4,6 +4,7 @@ var router = express.Router();
 const authRotuer = require('./auth.route')
 const userRotuer = require('./user.route')
 const notificationRouter = require('./notification.route')
+const companyRouter = require('./company.route')
 const jobRouter = require('./job.route')
 const commentRouter = require('./comment.route');
 
@@ -14,6 +15,7 @@ const commentRouter = require('./comment.route');
 router.use('/auth',authRotuer);
 router.use('/user',authMiddleware,userRotuer);
 router.use("/job",authMiddleware,jobRouter);
+router.use("/company",authMiddleware,companyRouter);
 router.use("/notification",authMiddleware,notificationRouter);
 router.use("/comment",authMiddleware,commentRouter);
 

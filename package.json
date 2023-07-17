@@ -16,6 +16,7 @@
     "fast-geoip": "^1.1.88",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
+    "joi": "^17.9.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.8.0",
     "morgan": "~1.9.1",

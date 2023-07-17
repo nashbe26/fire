@@ -2,6 +2,7 @@ const User = require("../models/user");
 const createError = require("http-errors");
 const bcrypt = require("bcrypt");
 const { recoveryJWT, verifyRecoveryJWT } = require("../utils/jwt");
+const Company = require("../models/company");
 
 const onlyAlphabetRegex = /^[A-Za-z ]+$/;
 const emailRegex = /^[a-z0-9]+(?:[.-][a-z0-9]+)*@(?!\.|\-)[a-z]+(?:\.[a-z]+)*$/;
@@ -12,27 +13,7 @@ const phoneRegex = /^\+[0-9]+$/;
  * This Function with register user in the data basr
  *
  */
-const register = async (data,type) => {
-
-
-  if (!(data && data.password && data.email && data.firstName && data.lastName))
-    throw createError(400, `Missing Information!`);
-
-  // Verfiy FirstName
-  if (data.firstName.length > 20 || !data.firstName.match(onlyAlphabetRegex))
-    throw createError(400, "Bad format firstName");
-
-  // Verfiy LastName
-  if (data.lastName.length > 20 || !data.lastName.match(onlyAlphabetRegex))
-    throw createError(400, "Bad format lastName");
-
-  //Verify email
-  if (!data.email.match(emailRegex)) throw createError(400, "Bad format email");
-
-  //Verify password
-  if (data.password.length > 20 || data.password.length < 6)
-    throw createError(400, "Bad format password");
-
+const register = async (data) => {
 
   const similarUsers = await User.findOne({ email: data.email.toLowerCase() });
 
@@ -41,10 +22,8 @@ const register = async (data,type) => {
 
   const hash = bcrypt.hashSync(data.password, 10);
 
-  data.friendsList = [];
   data.password = hash;
   data.email = data.email.toLowerCase();
-  data.role = type
   let userCreated = await User.create(data);
 
   if (!userCreated) throw createError(401, "can't Create User");
@@ -74,6 +53,28 @@ const login = async (body) => {
   else return user;
 };
 
+const loginCompany = async (body) => {
+
+  if (!body.email || !body.password)
+  throw createError(400, `body is missing abs!`);
+
+//Verify email
+if (!body.email.match(emailRegex)) 
+  throw createError(400, "Bad format email");
+
+  //Verify password
+if (body.password.length > 20 || body.password.length < 6)
+  throw createError(400, "Bad format password");
+  let user = await Company.findOne({ email: body.email.toLowerCase() });
+  console.log(user.password);
+
+if (!user) 
+  throw createError(404, `User does not exist !`);
+else if (!bcrypt.compareSync(body.password, user.password))
+  throw createError(401, `Password is not Correct`);
+else return user;
+};
+
 const forgetAccount = async (email) => {
   if (!email) throw createError(400, `Email est manquant`);
   const user = await User.findOne({ email });
@@ -97,6 +98,7 @@ const resetAccount = async (password, token) => {
 module.exports = {
   register,
   login,
+  loginCompany,
   forgetAccount,
   resetAccount,
 };

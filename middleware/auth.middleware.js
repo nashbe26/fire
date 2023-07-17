@@ -7,6 +7,7 @@ module.exports = (req,res,next) =>{
    
 
     try{
+
         let authToken = req.headers.authorization.split(' ');
         
         if( authToken[0].toLowerCase() != 'bearer') 
@@ -21,7 +22,7 @@ module.exports = (req,res,next) =>{
 
             if(!data) throw httpError(401,"failed to verify")
 
-            req.user = data.id;
+            req.user = data;
             req.role = data.role;
     
         next();

@@ -3,6 +3,7 @@ const createError = require("http-errors");
 const Job = require("../models/job");
 const { addProblemReminderNotificationCronJob } = require("../utils/cron");
 let mongoose = require('mongoose');
+const Company = require("../models/company");
 
 
 /**
@@ -12,12 +13,7 @@ let mongoose = require('mongoose');
  */
 const updateJob = async (id, jobid,data) => {
 
-  let jobs = await Job.findById(jobid)
-    console.log(jobs);
-  if (jobs.recruter != id)
-    throw createError(401, "you can't delete this");
-
-  let updated = await jobs.updateOne(data, {
+  let updated = await Job.findOneAndUpdate(jobid,data, {
     returnOriginal: false,
   });
 
@@ -34,8 +30,9 @@ const updateJob = async (id, jobid,data) => {
  *  This function will returns current logged user
  *
  */
-const getJobByName = async (id,jobs) => {
-    let oneUser = await Job.find({diplomat:jobs}).populate('recruter');
+const getJobByName = async (jobs) => {
+    console.log(jobs);
+    let oneUser = await Job.find({job_title:jobs});
   
     if (!oneUser) throw createError(401, "Job not Available");
   
@@ -49,7 +46,7 @@ const getJobByName = async (id,jobs) => {
  */
 const getJobById = async (id,job_params) => {
 
-  let oneUser = await Job.findById(job_params).populate('recruter').populate('cv.owner');
+  let oneUser = await Job.findById(job_params);
 
   if (!oneUser) throw createError(401, "Job not Available");
 
@@ -63,7 +60,7 @@ const getJobById = async (id,job_params) => {
  */
 const getAllJobs = async (id,job_params) => {
 
-    let oneUser = await Job.find().populate('recruter').populate('comments');;
+    let oneUser = await Job.find().populate('company_id',{password:0});
   
     if (!oneUser) throw createError(401, "User not Available");
   
@@ -77,30 +74,32 @@ const getAllJobs = async (id,job_params) => {
  */
 
 const createJob = async (id, data) => {
-    
-    let dataUp = {
-        ...data,
-    recruter:mongoose.Types.ObjectId(id)
-}
 
-  let oneUser = await Job.create(
-    dataUp
-  );
-
-let up = await  User.findByIdAndUpdate(id,{
-    $push:{
-    job_rec:{job_id: oneUser._id,date:Date.now()}
+    try{
         
+        
+            data.company_id = id;
+        
+            console.log(data);
+        
+            let job = new Job(data);
+            let new_job = await job.save();
+        
+            if(!new_job)
+              throw createError(401, "Failed to create new job");
+        
+            let get_comp = await Company.findById(id);
+            get_comp.jobs.push(new_job);
+            console.log(get_comp);
+            await get_comp.save();
+            
+            if(!get_comp)
+              throw createError(401, "you can't create a job this");
+        
+            return oneUser;
+    }catch(err){
+        console.log(err);
     }
-},{returnOriginal:false})
-
-  if (!oneUser || !up ) throw createError(401, "Failed to update");
-
-  
-
-  addProblemReminderNotificationCronJob(oneUser._id,up.firstName);
-
-  return oneUser;
 };
 
 /**
@@ -110,10 +109,8 @@ let up = await  User.findByIdAndUpdate(id,{
  */
 const deleteJob = async (id, data) => {
 
-    let jobs = await Job.findById(data)
-    console.log(data);
-    if (jobs.recruter != id)
-    throw createError(401, "you can't delete this");
+    let jobs = await Job.findById(data);
+
     let oneUser = await Job.deleteOne(
         jobs
     );

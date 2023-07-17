@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const createError = require("http-errors");
 const bcrypt = require("bcrypt");
-const Job = require("../models/job");
+const Job = require("../models/company");
 
 const sendToRec = async (id, jobId) => {
   let oneUser = await User.findById(id)
@@ -27,21 +27,34 @@ const sendToRec = async (id, jobId) => {
  *
  */
 const updateUser = async (id, data) => {
-  let oneUser = await User.updateOne({ _id: id }, data, {
+
+  console.log(id,data);
+
+  let oneUser = await User.findByIdAndUpdate(id , data, {
     returnOriginal: false,
   });
 
   if (!oneUser) throw createError(401, "User not Available");
 
-  let updated = {
-    firstName: oneUser.firstName,
-    lastName: oneUser.lastName,
-    email: oneUser.email,
-    numTel: oneUser.numTel,
-    picture: oneUser.picture,
-  };
+  let responseData = {
+    firstName :oneUser.firstName,
+      sureName :oneUser.sureName,
+      profession :oneUser.profession,
+      city :oneUser.city,
+      country :oneUser.country,
+      postal_code :oneUser.postal_code,
+      phone :oneUser.phone,
+      email :oneUser.email,
+      jobs :oneUser.jobs,
+      education :oneUser.education,
+      skills :oneUser.skills,
+      career_description :oneUser.career_description,
+      additional_data :oneUser.additional_data,
+      photo :oneUser.photo,
+      cover_photo :oneUser.cover_photo
+      }
 
-  return updated;
+  return responseData;
 };
 
 
@@ -89,24 +102,46 @@ const sendCV = async (id, cv) => {
 
 /**
  *
- *  This function will returns current logged user
+ *  This function will returns user by idr
  *
  */
 const getUserById = async (id) => {
   let oneUser = await User.findById(id, {
     
     password: 0,
-    recovery_token: 0,
     __v: 0,
     createdAt: 0,
     updatedAt: 0,
-  }).populate('job_rec.job_id');
+  });
 
   if (!oneUser) throw createError(401, "User not Available");
 
   return oneUser;
 };
 
+/** this will return logged user */
+const getUsers = async (id) => {
+  let oneUser = await User.findById(id, {
+    
+    password: 0,
+    __v: 0,
+    createdAt: 0,
+    updatedAt: 0,
+  });
+
+  if (!oneUser) throw createError(401, "User not Available");
+
+  return oneUser;
+};
+
+/** this function will delete the password */
+const deleteUser= async (id) => {
+  let oneUser = await User.findByIdAndDelete(id);
+
+  if (!oneUser) throw createError(401, "Failed to delete");
+
+  return 'User deleted';
+};
 /**
  *
  *  This Function will update user password
@@ -156,6 +191,8 @@ module.exports = {
   updatePasswordUser,
   sendCV,
   sendToRec,
-  updateUserViews
+  updateUserViews,
+  getUsers,
+  deleteUser
 };
 
