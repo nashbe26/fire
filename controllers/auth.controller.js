@@ -14,6 +14,7 @@ const register = asyncHandler(async (req, res) => {
 const login = asyncHandler(async (req, res, _) => {
   let response = await authService.login(req.body);
   let responseData = {
+    _id: response._id,
     firstName: response.firstName,
     sureName: response.sureName,
     profession: response.profession,
@@ -30,7 +31,7 @@ const login = asyncHandler(async (req, res, _) => {
     photo: response.photo,
     cover_photo: response.cover_photo,
   };
-  const token = generateJWT({ ...response, role: "talent" });
+  const token = generateJWT({ user: responseData, role: "talent" });
 
   if (!token) throw createError(404, `Failed to login due some reasons`);
 
@@ -44,10 +45,6 @@ const login = asyncHandler(async (req, res, _) => {
 
 const loginCompany = asyncHandler(async (req, res, _) => {
   let response = await authService.loginCompany(req.body);
-
-  const token = generateJWT({ ...response, role: "company" });
-
-  if (!token) throw createError(404, `Failed to login due some reasons`);
 
   let resData = {
     _id: response._id,
@@ -68,6 +65,10 @@ const loginCompany = asyncHandler(async (req, res, _) => {
     cover_photo: response.cover_photo,
     logo_photo: response.logo_photo,
   };
+
+  const token = generateJWT({ user: resData, role: "company" });
+
+  if (!token) throw createError(404, `Failed to login due some reasons`);
 
   res.status(200).json({
     data: {

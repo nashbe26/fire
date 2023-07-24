@@ -16,10 +16,12 @@ module.exports = (req, res, next) => {
 
     const data = verifyJWT(token);
 
-    if (!data) throw httpError(401, "failed to verify");
+    if (!data) {
+      throw httpError(401, "failed to verify");
+    }
 
-    req.user = data;
-    req.role = data.role;
+    req.user = data.user;
+    req.role = data.user.role;
 
     next();
   } catch (e) {

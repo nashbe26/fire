@@ -4,15 +4,16 @@ const userService = require("../services/user.service");
 // calling get user service
 
 const getUsers = asyncHandler(async (req, res) => {
-  let {user} = req.user;
-  const response = await userService.getUsers(user._id)
+  let { user, role } = req.user;
+  console.log(user);
+  const response = await userService.getUsers(user._id);
   res.status(200).json(response);
 });
 
 const deleteUser = asyncHandler(async (req, res) => {
-  let {user} = req.user;
-  const response = await userService.deleteUser(user._id)
-  res.status(200).json({response});
+  let { user } = req.user;
+  const response = await userService.deleteUser(user._id);
+  res.status(200).json({ response });
 });
 
 const getUserById = asyncHandler(async (req, res) => {
@@ -57,7 +58,7 @@ const sendCV = asyncHandler(async (req, res) => {
 
 const sendToRec = asyncHandler(async (req, res) => {
   let user_id = req.user;
-  let {job_id} = req.params;
+  let { job_id } = req.params;
 
   let users = await userService.sendToRec(user_id, job_id);
 
@@ -83,15 +84,13 @@ const updatePasswordUser = asyncHandler(async (req, res, next) => {
   res.status(200).json({ message: "user password successfully updated" });
 });
 
-const updateUserViews = asyncHandler(async(req,res)=> {
-
+const updateUserViews = asyncHandler(async (req, res) => {
   let user_id = req.user;
-  let {id} = req.params 
-  console.log(user_id,id);
-  let views = await userService.updateUserViews(user_id,id);
+  let { id } = req.params;
+  console.log(user_id, id);
+  let views = await userService.updateUserViews(user_id, id);
   res.status(200).json(views);
 });
-
 
 module.exports = {
   getUsers,
@@ -102,5 +101,5 @@ module.exports = {
   sendToRec,
   updateUserViews,
   getUserById,
-  deleteUser
+  deleteUser,
 };

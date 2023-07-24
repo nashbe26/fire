@@ -122,6 +122,7 @@ const getUsers = async (id) => {
     createdAt: 0,
     updatedAt: 0,
   });
+  let role = "talent";
 
   if (!oneUser) {
     oneUser = await Company.findById(id, {
@@ -130,11 +131,12 @@ const getUsers = async (id) => {
       createdAt: 0,
       updatedAt: 0,
     });
+    role = "company";
   }
 
   if (!oneUser) throw createError(401, "User not Available");
 
-  return oneUser;
+  return { user: oneUser, role };
 };
 
 /** this function will delete the password */
