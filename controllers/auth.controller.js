@@ -12,67 +12,67 @@ const register = asyncHandler(async (req, res) => {
 //Calling login Service
 
 const login = asyncHandler(async (req, res, _) => {
-
   let response = await authService.login(req.body);
   let responseData = {
-          firstName :response.firstName,
-      sureName :response.sureName,
-      profession :response.profession,
-      city :response.city,
-      country :response.country,
-      postal_code :response.postal_code,
-      phone :response.phone,
-      email :response.email,
-      jobs :response.jobs,
-      education :response.education,
-      skills :response.skills,
-      career_description :response.career_description,
-      additional_data :response.additional_data,
-      photo :response.photo,
-      cover_photo :response.cover_photo
-  }
-  const token = generateJWT(response);
+    firstName: response.firstName,
+    sureName: response.sureName,
+    profession: response.profession,
+    city: response.city,
+    country: response.country,
+    postal_code: response.postal_code,
+    phone: response.phone,
+    email: response.email,
+    jobs: response.jobs,
+    education: response.education,
+    skills: response.skills,
+    career_description: response.career_description,
+    additional_data: response.additional_data,
+    photo: response.photo,
+    cover_photo: response.cover_photo,
+  };
+  const token = generateJWT({ ...response, role: "talent" });
 
   if (!token) throw createError(404, `Failed to login due some reasons`);
 
   res.status(200).json({
     data: {
       token,
-      response:responseData
+      response: responseData,
     },
   });
 });
 
 const loginCompany = asyncHandler(async (req, res, _) => {
-  
   let response = await authService.loginCompany(req.body);
 
-  const token = generateJWT(response);
+  const token = generateJWT({ ...response, role: "company" });
 
   if (!token) throw createError(404, `Failed to login due some reasons`);
-  
+
   let resData = {
     _id: response._id,
     name: response.name,
     type: response.type,
     year: response.year,
     number: response.number,
-    telephoneNumber:response.telephoneNumber,
+    telephoneNumber: response.telephoneNumber,
     email: response.email,
     country: response.country,
     city: response.city,
     certification: response.certification,
     url: response.url,
-    urlLinkedIn:response.urlLinkedIn,
+    urlLinkedIn: response.urlLinkedIn,
     intPresence: response.intPresence,
-    headOffice:response.headOffice,
-    about:response.about
-  }
+    headOffice: response.headOffice,
+    about: response.about,
+    cover_photo: response.cover_photo,
+    logo_photo: response.logo_photo,
+  };
 
   res.status(200).json({
     data: {
       token,
-      response:resData
+      response: resData,
     },
   });
 });
@@ -97,5 +97,5 @@ module.exports = {
   login,
   forgetAccount,
   resetAccount,
-  loginCompany
+  loginCompany,
 };

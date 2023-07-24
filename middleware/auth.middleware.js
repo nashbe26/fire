@@ -1,34 +1,28 @@
-const {verifyJWT} = require('../utils/jwt');
-const httpError = require('http-errors');
+const { verifyJWT } = require("../utils/jwt");
+const httpError = require("http-errors");
 
 // thins function will check user request from front and verify if user exist
 
-module.exports = (req,res,next) =>{
-   
+module.exports = (req, res, next) => {
+  try {
+    let authToken = req.headers.authorization.split(" ");
 
-    try{
+    if (authToken[0].toLowerCase() != "bearer")
+      throw new httpError(401, "Bad token");
 
-        let authToken = req.headers.authorization.split(' ');
-        
-        if( authToken[0].toLowerCase() != 'bearer') 
-            throw new httpError(401,'Bad token');
-        
-        let token = authToken[1];
+    let token = authToken[1];
 
-        if(token.length == 0)
-            throw new httpError(401,'Bad token')
-        
-            const data = verifyJWT(token);
+    if (token.length == 0) throw new httpError(401, "Bad token");
 
-            if(!data) throw httpError(401,"failed to verify")
+    const data = verifyJWT(token);
 
-            req.user = data;
-            req.role = data.role;
-    
-        next();
+    if (!data) throw httpError(401, "failed to verify");
 
-    }catch(e){
-        throw new httpError(401,'Unauthorized');
-    }        
-        
-}
+    req.user = data;
+    req.role = data.role;
+
+    next();
+  } catch (e) {
+    throw new httpError(401, "Unauthorized");
+  }
+};

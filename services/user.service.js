@@ -1,23 +1,23 @@
 const User = require("../models/user");
+const Company = require("../models/company");
 const createError = require("http-errors");
 const bcrypt = require("bcrypt");
 const Job = require("../models/company");
 
 const sendToRec = async (id, jobId) => {
-  let oneUser = await User.findById(id)
+  let oneUser = await User.findById(id);
 
   if (!oneUser) throw createError(401, "User not Available");
-  
-  const jobCreate = await Job.findById(jobId)
-  jobCreate.cv.push({
-    path_CV:oneUser.cv,
-    owner:oneUser._id
-  })
 
-  let newJob = await jobCreate.save()
-  
-  if(!newJob)
-    throw createError(401, "UPDATE FAILED");
+  const jobCreate = await Job.findById(jobId);
+  jobCreate.cv.push({
+    path_CV: oneUser.cv,
+    owner: oneUser._id,
+  });
+
+  let newJob = await jobCreate.save();
+
+  if (!newJob) throw createError(401, "UPDATE FAILED");
   return newJob;
 };
 
@@ -27,36 +27,34 @@ const sendToRec = async (id, jobId) => {
  *
  */
 const updateUser = async (id, data) => {
+  console.log(id, data);
 
-  console.log(id,data);
-
-  let oneUser = await User.findByIdAndUpdate(id , data, {
+  let oneUser = await User.findByIdAndUpdate(id, data, {
     returnOriginal: false,
   });
 
   if (!oneUser) throw createError(401, "User not Available");
 
   let responseData = {
-    firstName :oneUser.firstName,
-      sureName :oneUser.sureName,
-      profession :oneUser.profession,
-      city :oneUser.city,
-      country :oneUser.country,
-      postal_code :oneUser.postal_code,
-      phone :oneUser.phone,
-      email :oneUser.email,
-      jobs :oneUser.jobs,
-      education :oneUser.education,
-      skills :oneUser.skills,
-      career_description :oneUser.career_description,
-      additional_data :oneUser.additional_data,
-      photo :oneUser.photo,
-      cover_photo :oneUser.cover_photo
-      }
+    firstName: oneUser.firstName,
+    sureName: oneUser.sureName,
+    profession: oneUser.profession,
+    city: oneUser.city,
+    country: oneUser.country,
+    postal_code: oneUser.postal_code,
+    phone: oneUser.phone,
+    email: oneUser.email,
+    jobs: oneUser.jobs,
+    education: oneUser.education,
+    skills: oneUser.skills,
+    career_description: oneUser.career_description,
+    additional_data: oneUser.additional_data,
+    photo: oneUser.photo,
+    cover_photo: oneUser.cover_photo,
+  };
 
   return responseData;
 };
-
 
 /**
  *
@@ -78,7 +76,6 @@ const addUserPorfile = async (id, img) => {
   return oneUser;
 };
 
-
 /**
  *
  *  This function will returns current logged user
@@ -99,7 +96,6 @@ const sendCV = async (id, cv) => {
   return oneUser;
 };
 
-
 /**
  *
  *  This function will returns user by idr
@@ -107,7 +103,6 @@ const sendCV = async (id, cv) => {
  */
 const getUserById = async (id) => {
   let oneUser = await User.findById(id, {
-    
     password: 0,
     __v: 0,
     createdAt: 0,
@@ -122,12 +117,20 @@ const getUserById = async (id) => {
 /** this will return logged user */
 const getUsers = async (id) => {
   let oneUser = await User.findById(id, {
-    
     password: 0,
     __v: 0,
     createdAt: 0,
     updatedAt: 0,
   });
+
+  if (!oneUser) {
+    oneUser = await Company.findById(id, {
+      password: 0,
+      __v: 0,
+      createdAt: 0,
+      updatedAt: 0,
+    });
+  }
 
   if (!oneUser) throw createError(401, "User not Available");
 
@@ -135,12 +138,12 @@ const getUsers = async (id) => {
 };
 
 /** this function will delete the password */
-const deleteUser= async (id) => {
+const deleteUser = async (id) => {
   let oneUser = await User.findByIdAndDelete(id);
 
   if (!oneUser) throw createError(401, "Failed to delete");
 
-  return 'User deleted';
+  return "User deleted";
 };
 /**
  *
@@ -166,23 +169,20 @@ const updatePasswordUser = async (id, data) => {
 };
 
 const updateUserViews = async (id, data) => {
-  if(id != data){
+  if (id != data) {
     let oneUser = await User.findOneAndUpdate(
       { _id: data },
-      {$inc:{ "views": 1 }},
+      { $inc: { views: 1 } },
       {
         returnOriginal: false,
       }
     );
-  
-    if (!oneUser) throw createError(401, "Failed to update");
-  
-    return oneUser;
-  }else
-  return "cant edit user accout";
-  
-};
 
+    if (!oneUser) throw createError(401, "Failed to update");
+
+    return oneUser;
+  } else return "cant edit user accout";
+};
 
 module.exports = {
   addUserPorfile,
@@ -193,6 +193,5 @@ module.exports = {
   sendToRec,
   updateUserViews,
   getUsers,
-  deleteUser
+  deleteUser,
 };
-

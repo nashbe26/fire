@@ -14,7 +14,6 @@ const phoneRegex = /^\+[0-9]+$/;
  *
  */
 const register = async (data) => {
-
   const similarUsers = await User.findOne({ email: data.email.toLowerCase() });
 
   if (similarUsers)
@@ -54,25 +53,22 @@ const login = async (body) => {
 };
 
 const loginCompany = async (body) => {
-
   if (!body.email || !body.password)
-  throw createError(400, `body is missing abs!`);
+    throw createError(400, `body is missing abs!`);
 
-//Verify email
-if (!body.email.match(emailRegex)) 
-  throw createError(400, "Bad format email");
+  //Verify email
+  if (!body.email.match(emailRegex)) throw createError(400, "Bad format email");
 
   //Verify password
-if (body.password.length > 20 || body.password.length < 6)
-  throw createError(400, "Bad format password");
+  if (body.password.length > 20 || body.password.length < 6)
+    throw createError(400, "Bad format password");
   let user = await Company.findOne({ email: body.email.toLowerCase() });
   console.log(user.password);
 
-if (!user) 
-  throw createError(404, `User does not exist !`);
-else if (!bcrypt.compareSync(body.password, user.password))
-  throw createError(401, `Password is not Correct`);
-else return user;
+  if (!user) throw createError(404, `User does not exist !`);
+  else if (!bcrypt.compareSync(body.password, user.password))
+    throw createError(401, `Password is not Correct`);
+  else return user;
 };
 
 const forgetAccount = async (email) => {
