@@ -1,50 +1,77 @@
-
-  const { verifyJWT } = require("../jwt");
-  const {createNotification} = require("../../services/notification.service");
-  let onlineUser = [];
+let onlineUser = []
 
 
+function joinRoom(socket, io) {
 
-  function addOnlineUser(client, io) {
-    client.on("new user", (data) => {
-      if (data) {
-        let userId = verifyJWT(data);
-  
-        let userExsit = onlineUser.find((x) => x.userId == userId.payload.userId);
-  
-        if (!userExsit)
-          onlineUser.push({
-            userId: userId.payload.user,
-            userSocket: client.id,
-          });
+  socket.on('newUser', (data) => {
+
+    if (data) {
+      let userId = data;
+
+      let userExsit = onlineUser.find((x) => x.userId == userId)
+
+      if (!userExsit) {
+        let arrayTab = [];
+        arrayTab.push(socket.id)
+        console.log(userId); 0
+        onlineUser.push({ userId, userSocket: arrayTab })
+      } else {
+        userExsit.userSocket.push(socket.id)
       }
-  
-      client.emit("online user", onlineUser);
-    });
-  }
+    }
+    console.log(onlineUser);
+    io.emit('onlineuser', onlineUser)
+  })
 
-  function leaveUserOnline(client, io) {
-    client.on("disconnect", () => {
-      onlineUser = onlineUser.filter((user) => {
-        return user.userSocket !== client.id;
-      });
-      io.emit("online user", onlineUser);
-    });
-  }
-  
-  const sendNotification = async (client,io) => {
-    client.on("notification", async (data)=> {
-      let notification = await createNotification(data.owner,data.receiver,data.type,data.description);
-      if(notification){
-        connected_User = onlineUser.filter(e => e.userId == data.receiver)
-        for (let user of connected_User){
-          io.to(user.userSocket).emit("notification",{action : notification.type,notification:notification});
-      }
-      }
-    })
-  };
+}
+
+function joinChat(socket, io) {
+  socket.on('join-chat', (disId) => {
+    socket.join(disId)
+    console.warn("user join room"+disId);
+  })
+}
+
+function leaveChat(socket, io){
+  socket.on('leaveRoom', (roomName) => {
+    socket.leave(roomName);
+    console.log(`User left room: ${roomName}`);
+  });
+}
+
+function notification_user(socket, io) {
+  socket.on("newnotif", async (data) => {
+
+    const resData = data.notification.email
+    let arrF = onlineUser.find((user) => { return user.userId == resData });
+
+    if (arrF)
+      arrF.userSocket.map((x) => {
+        io.to(x).emit("getNotfi", { data: data.notification });
+      })
+
+
+  });
+}
+
+function sendMessage(socket, io) {
+
+  socket.on('sendMessage', (discussionId,message, user) => {
+    
+    console.log(    
+      io.sockets.adapter.rooms
+    );
+
+    io.to(socket.rooms).emit('message', { user, text: message });
+
+  });
+
+}
+
 module.exports = {
-    addOnlineUser,
-    leaveUserOnline,
-    sendNotification,
-  };
+  joinRoom,
+  notification_user,
+  sendMessage,
+  joinChat,
+  leaveChat
+}

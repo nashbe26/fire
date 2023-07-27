@@ -40,7 +40,7 @@ const getAllJob = asyncHandler(async (req, res, next) => {
 });
 
 const createJob = asyncHandler(async (req, res, next) => {
-    const id = req.user.user._id;
+    const id = req.user._id;
     const job = await jobService.createJob(id, req.body);
   
     res.status(200).json({ message: "Job successfully created" ,job});
@@ -54,12 +54,23 @@ const deleteJob  = asyncHandler(async (req, res, next) => {
     res.status(200).json({ message: "Job successfully deleted" });
   });
   
-
+  const condidateJob  = asyncHandler(async (req, res, next) => {
+    const id = req.user._id;
+    let data = {
+      id,
+      cover:req.body.cover
+    }
+    const job = await jobService.condidateJob(data, req.params.job_id);
+  
+    res.status(200).json({ message: "Job successfully deleted" });
+  });
+  
 module.exports = {
     getJobById,
     getJobByName,    
     updateJob,
     createJob,
     deleteJob,
-    getAllJob
+    getAllJob,
+    condidateJob
 };

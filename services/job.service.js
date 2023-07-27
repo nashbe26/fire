@@ -129,6 +129,35 @@ const getMostJobRec = async (id, data) => {
 
   return mostJobs.slice(0,10);
 };
+const condidateJob = async (data, idJob) => {
+
+  let jobs = await Job.findById(idJob);
+
+  if(!jobs)
+    throw createError(401, "Failed to get job");
+  
+  let obj
+
+  if(jobs.with_cover){
+
+    obj = {
+      id_condidate:data.id,
+      cover_text:data.cover
+    }
+  }else{
+    obj = {
+      id_condidate:data.id
+    }
+  }
+  const newCondidate = await jobs.candidates.push(obj)
+  await jobs.save()
+  
+  if(!newCondidate)
+    throw createError(401, "Failed to save condidate");
+
+  return newCondidate;
+
+};
 
 module.exports = {
 
@@ -138,6 +167,6 @@ module.exports = {
     createJob,
     deleteJob,
     getAllJobs,
-    getMostJobRec 
-
+    getMostJobRec ,
+    condidateJob
 };

@@ -2,8 +2,9 @@ const Company = require("../models/company");
 const Job = require("../models/job");
 
 const validateJobOwnerUpdate = async (req, res, next) => {
-    const {user} = req.user // Assuming the user ID is passed as a URL parameter
+    const user = req.user // Assuming the user ID is passed as a URL parameter
     // Assuming the user ID is present in the request body
+    console.log(user);
     try {
       // Fetch the current user from the database
       const currentUser = await Job.findById(req.params.job_id);

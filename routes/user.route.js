@@ -6,7 +6,6 @@ const {
   validateCurrentUserUpdate,
 } = require("../middleware/verifyTalent.midddleware");
 
-const { uploadImage } = require("../utils/multer");
 const { uploadPDF } = require("../utils/multerCV");
 
 router.put(
@@ -14,13 +13,12 @@ router.put(
   validateCurrentUserUpdate,
   userController.updateUser
 );
-router.put("/updatePassword", userController.updatePasswordUser);
+router.put("/updatePassword", validateCurrentUserUpdate, userController.updatePasswordUser);
 router.get("/updateViews/:id", userController.updateUserViews);
 router.get("/getUser", userController.getUsers);
 router.get("/getUserById/:id", userController.getUserById);
-router.post("/updateUserImage", uploadImage, userController.addUserPorfile);
-router.post("/uploadCV", uploadPDF, userController.sendCV);
+router.post("/uploadCV", uploadPDF, validateCurrentUserUpdate, userController.sendCV);
 router.get("/sendToRec/:job_id", userController.sendToRec);
-router.delete("/deleteUser", userController.deleteUser);
+router.delete("/deleteUser", validateCurrentUserUpdate, userController.deleteUser);
 
 module.exports = router;

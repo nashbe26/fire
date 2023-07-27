@@ -8,8 +8,12 @@ const candidateSchema = new mongoose.Schema({
   checked_before:false,
   status: {
     type: String,
-    enum: ['refused', 'accepted','pending'],
-    default:"submitted"
+    enum: ['refused', 'accepted','pending',"submitted"],
+    default:"submitted",
+ 
+  },
+  cover_text:{
+    type:String
   }
 });
 
