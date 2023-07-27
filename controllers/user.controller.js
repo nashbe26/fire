@@ -24,19 +24,6 @@ const getUserById = asyncHandler(async (req, res) => {
 
 // calling add photo service
 
-const addUserPorfile = asyncHandler(async (req, res) => {
-  let user_id = req.user;
-
-  if (!req.file) {
-    const error = new Error("No File");
-    error.httpStatusCode = 400;
-    return next(error);
-  }
-
-  let users = await userService.addUserPorfile(user_id, req.file.originalname);
-
-  res.status(200).json(users);
-});
 
 // calling add photo service
 
@@ -96,7 +83,6 @@ module.exports = {
   getUsers,
   updateUser,
   updatePasswordUser,
-  addUserPorfile,
   sendCV,
   sendToRec,
   updateUserViews,

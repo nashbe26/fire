@@ -11,6 +11,9 @@ const candidateSchema = new mongoose.Schema({
     enum: ["refused", "accepted", "pending"],
     default: "submitted",
   },
+  cover_text: {
+    type: String,
+  },
 });
 
 const jobSchema = new mongoose.Schema(

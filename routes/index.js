@@ -7,6 +7,8 @@ const notificationRouter = require('./notification.route')
 const companyRouter = require('./company.route')
 const jobRouter = require('./job.route')
 const commentRouter = require('./comment.route');
+const messageRouter = require('./message.route');
+const disRouter = require('./disccusion.route');
 
 
 
@@ -18,6 +20,8 @@ router.use("/job",authMiddleware,jobRouter);
 router.use("/company",authMiddleware,companyRouter);
 router.use("/notification",authMiddleware,notificationRouter);
 router.use("/comment",authMiddleware,commentRouter);
+router.use("/message",authMiddleware,messageRouter);
+router.use("/disccusion",authMiddleware,disRouter);
 
 
 module.exports = router;

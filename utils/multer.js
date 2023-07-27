@@ -15,6 +15,6 @@ const uploadImage = multer({
         callback(null,file.originalname)},
     })
 
-  }).array('file');
+  }).single('file');
 
 module.exports= {uploadImage}

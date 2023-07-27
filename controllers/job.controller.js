@@ -62,6 +62,17 @@ const deleteJob = asyncHandler(async (req, res, next) => {
   res.status(200).json({ message: "Job successfully deleted" });
 });
 
+const condidateJob = asyncHandler(async (req, res, next) => {
+  const id = req.user._id;
+  let data = {
+    id,
+    cover: req.body.cover,
+  };
+  const job = await jobService.condidateJob(data, req.params.job_id);
+
+  res.status(200).json({ message: "Job successfully deleted" });
+});
+
 module.exports = {
   getJobById,
   getJobByName,
@@ -70,4 +81,5 @@ module.exports = {
   createJob,
   deleteJob,
   getAllJob,
+  condidateJob,
 };
