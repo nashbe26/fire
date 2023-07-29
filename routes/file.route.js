@@ -8,6 +8,11 @@ const {
 
 const { uploadImage } = require("../utils/multer");
 
-router.post("/updateUserImage", validateCurrentUserUpdate,uploadImage, fileController.getFileImageName);
+router.post(
+  "/updateUserImage",
+  validateCurrentUserUpdate,
+  uploadImage,
+  fileController.getFileImageName
+);
 
-module.exports = router
+module.exports = router;

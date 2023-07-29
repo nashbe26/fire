@@ -21,19 +21,10 @@ router.delete(
   validateJobOwnerUpdate,
   jobController.deleteJob
 );
-router.put(
-  "/updateJob/:job_id",
-  validateJobOwnerUpdate,
-  jobController.updateJob
-);
-router.delete(
-  "/deleteJob/:job_id",
-  validateJobOwnerUpdate,
-  jobController.deleteJob
-);
+
 router.put(
   "/condidate/:job_id",
-  validateJobOwnerUpdate,
+  // validateJobOwnerUpdate, // this is not for update company data
   jobController.condidateJob
 );
 

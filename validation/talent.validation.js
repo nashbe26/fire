@@ -1,4 +1,4 @@
-const Joi = require('joi');
+const Joi = require("joi");
 
 const jobSchema = Joi.object({
   job_title: Joi.string().required(),
@@ -7,7 +7,8 @@ const jobSchema = Joi.object({
   country: Joi.string().required(),
   start_date: Joi.date().required(),
   end_date: Joi.date().required(),
-  job_description: Joi.string().required()
+  job_description: Joi.string().required(),
+  work_here: Joi.boolean().optional(),
 });
 
 const educationSchema = Joi.object({
@@ -16,11 +17,11 @@ const educationSchema = Joi.object({
   degree: Joi.string().required(),
   field: Joi.string().required(),
   grad_start_date: Joi.date().required(),
-  grad_end_date: Joi.date().required()
+  grad_end_date: Joi.date().required(),
 });
 
 const skillSchema = Joi.object({
-  skill: Joi.string().required()
+  skill: Joi.string().required(),
 });
 
 const talentSchema = Joi.object({
@@ -37,7 +38,7 @@ const talentSchema = Joi.object({
   education: Joi.array().items(educationSchema),
   skills: Joi.array().items(skillSchema),
   career_description: Joi.string().optional(),
-  additional_data: Joi.string().optional()
+  additional_data: Joi.string().optional(),
 });
 
 module.exports = talentSchema;

@@ -63,7 +63,7 @@ const deleteJob = asyncHandler(async (req, res, next) => {
 });
 
 const condidateJob = asyncHandler(async (req, res, next) => {
-  const id = req.user._id;
+  const id = req.user.user._id;
   let data = {
     id,
     cover: req.body.cover,

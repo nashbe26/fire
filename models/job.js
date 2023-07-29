@@ -9,7 +9,7 @@ const candidateSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ["refused", "accepted", "pending"],
-    default: "submitted",
+    default: "pending",
   },
   cover_text: {
     type: String,
