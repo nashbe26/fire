@@ -1,20 +1,23 @@
 const mongoose = require("mongoose");
 
-const candidateSchema = new mongoose.Schema({
-  id_condidate: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Users",
+const candidateSchema = new mongoose.Schema(
+  {
+    id_condidate: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
+    },
+    checked_before: false,
+    status: {
+      type: String,
+      enum: ["refused", "accepted", "pending"],
+      default: "pending",
+    },
+    cover_text: {
+      type: String,
+    },
   },
-  checked_before: false,
-  status: {
-    type: String,
-    enum: ["refused", "accepted", "pending"],
-    default: "pending",
-  },
-  cover_text: {
-    type: String,
-  },
-});
+  { timestamps: true }
+);
 
 const jobSchema = new mongoose.Schema(
   {
