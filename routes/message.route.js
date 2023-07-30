@@ -1,10 +1,9 @@
-
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const MessageController = require('../controllers/message.controller');
+const MessageController = require("../controllers/message.controller");
 
-router.post('/createMessages', MessageController.createMessage);
-router.get('/getMessages/:messageId', MessageController.getMessagesInDiscussion);
-router.delete('/delteMssages/:messageId', MessageController.deleteMessage);
+router.post("/createMessages", MessageController.createMessage);
+router.get("/getMessages/:discId", MessageController.getMessagesInDiscussion);
+router.delete("/delteMssages/:messageId", MessageController.deleteMessage);
 
 module.exports = router;

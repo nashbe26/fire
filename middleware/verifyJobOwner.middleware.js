@@ -4,11 +4,9 @@ const Job = require("../models/job");
 const validateJobOwnerUpdate = async (req, res, next) => {
   const user = req.user.user; // Assuming the user ID is passed as a URL parameter
   // Assuming the user ID is present in the request body
-  // console.log(user);
   try {
     // Fetch the current user from the database
     const currentJob = await Job.findById(req.params.job_id);
-    console.log(currentJob);
     // Check if the current user is trying to update their own information
     if (currentJob.company_id.toString() !== user._id) {
       return res.status(403).json({

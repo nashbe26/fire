@@ -28,4 +28,10 @@ router.put(
   jobController.condidateJob
 );
 
+router.put(
+  "/condidate_update/:condidateId",
+  // validateJobOwnerUpdate, // this is not for update company data
+  jobController.UpdateCandidate
+);
+
 module.exports = router;

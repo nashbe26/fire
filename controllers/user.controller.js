@@ -5,7 +5,6 @@ const userService = require("../services/user.service");
 
 const getUsers = asyncHandler(async (req, res) => {
   let { user, role } = req.user;
-  console.log(user);
   const response = await userService.getUsers(user._id);
   res.status(200).json(response);
 });
@@ -23,7 +22,6 @@ const getUserById = asyncHandler(async (req, res) => {
 });
 
 // calling add photo service
-
 
 // calling add photo service
 
@@ -74,7 +72,6 @@ const updatePasswordUser = asyncHandler(async (req, res, next) => {
 const updateUserViews = asyncHandler(async (req, res) => {
   let user_id = req.user;
   let { id } = req.params;
-  console.log(user_id, id);
   let views = await userService.updateUserViews(user_id, id);
   res.status(200).json(views);
 });

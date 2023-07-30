@@ -81,13 +81,11 @@ const loginCompany = asyncHandler(async (req, res, _) => {
 const forgetAccount = asyncHandler(async (req, res, _) => {
   const { email } = req.body;
   const token = await authService.forgetAccount(email);
-  console.log(token);
   res.status(200).json({ message: "Request successfuly Sent" });
 });
 
 const resetAccount = asyncHandler(async (req, res, _) => {
   const { token } = req.query;
-  console.log(token);
   const { password } = req.body;
   await authService.resetAccount(password, token);
   res.status(200).json({ message: "Password successfuly updated" });

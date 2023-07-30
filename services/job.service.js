@@ -151,6 +151,38 @@ const condidateJob = async (data, idJob) => {
   return newCondidate;
 };
 
+const UpdateCondidate = async (id, state) => {
+  try {
+    console.log(id, state);
+    let jobs = await Job.find();
+    let job_pos = -1;
+    let cond_pos = -1;
+
+    jobs.forEach((job, key1) => {
+      job.candidates.forEach(async (candidate, key2) => {
+        console.log(candidate._id, id, candidate._id == id);
+        if (candidate._id == id) {
+          job_pos = key1;
+          cond_pos = key2;
+        }
+      });
+    });
+    console.log(job_pos, cond_pos);
+
+    if (job_pos !== -1 && cond_pos !== -1) {
+      let job_updt = await Job.findById(jobs[job_pos]._id);
+      job_updt.candidates[cond_pos].status = state;
+      await job_updt.save();
+    }
+
+    // candidate.status = state;
+    //       candidate.save({ suppressWarning: true });
+    //       job.save();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   getJobByName,
   getJobById,
@@ -161,4 +193,5 @@ module.exports = {
   getMostJobRec,
   getAllJobsComp,
   condidateJob,
+  UpdateCondidate,
 };

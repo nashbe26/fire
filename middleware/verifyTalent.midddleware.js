@@ -13,8 +13,6 @@ const validateCurrentUserUpdate = async (req, res, next) => {
       currentUser = await Company.findById(id);
     }
 
-    console.log(currentUser);
-
     // Check if the current user is trying to update their own information
     if (currentUser._id.toString() !== id) {
       return res
