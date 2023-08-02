@@ -30,6 +30,17 @@ const register = async (data) => {
   return userCreated;
 };
 
+const mail_exist = async (email) => {
+  const similarUsers = await User.findOne({ email: email.toLowerCase() });
+  const similarCompany = await Company.findOne({ email: email.toLowerCase() });
+
+  if (similarUsers || similarCompany) {
+    return true;
+  }
+
+  return false;
+};
+
 /**
  *
  * This Function will login user to his own account by checking if email and password exists
@@ -97,4 +108,5 @@ module.exports = {
   loginCompany,
   forgetAccount,
   resetAccount,
+  mail_exist,
 };

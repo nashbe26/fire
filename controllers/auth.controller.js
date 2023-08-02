@@ -91,10 +91,16 @@ const resetAccount = asyncHandler(async (req, res, _) => {
   res.status(200).json({ message: "Password successfuly updated" });
 });
 
+const mailExist = asyncHandler(async (req, res, _) => {
+  const result = await authService.mail_exist(req.params.mail);
+  res.status(200).json({ message: "mail exist", exist: result });
+});
+
 module.exports = {
   register,
   login,
   forgetAccount,
   resetAccount,
   loginCompany,
+  mailExist,
 };
