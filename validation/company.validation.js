@@ -5,7 +5,7 @@ const companySchema = Joi.object({
   name: Joi.string().required(), // Company Name
   type: Joi.string().valid("Employer", "Recruiter").required(), // Type
   year: Joi.number().required(), // Year Created
-  number: Joi.number().required(), // Number of employees
+  number: Joi.string().required(), // Number of employees
   telephoneNumber: Joi.string().required(), // Telephone Number
   email: Joi.string().email().required(), // E-mail Address
   country: Joi.string().required(), // Country

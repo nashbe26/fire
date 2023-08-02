@@ -30,38 +30,55 @@ const getNotifications = async (userId) => {
   return notifications;
 };
 
-const createNotification = async (owner, receiver, type,job_id) => {
-    let description = ''
-   
-    switch(type){
-
-        case "new_job" :
-            description = "un nouveau emploi a ete creer qui reponds a vos qualifications" 
-            break;
-        case "like_job" :
-            description = receiver.firstName+" "+receiver.lastName + "a aimé votre offre de travail" 
-            break;
-        case "comment_job" :
-            description = receiver.firstName+" "+receiver.lastName + "a commenté votre offre de travail" 
-            break;
-        case "submit_job" :
-            description = receiver.firstName+" "+receiver.lastName + "a condidaté à votre offre de travail" 
-            break;
-        case "end_job" :
-            description = "Votre offre de travail est expiré. veuillez la renouveller ou la retirer" 
-            break;
-    }
+const createNotification = async ({
+  owner,
+  receiver,
+  description,
+  job_id,
+  type,
+}) => {
+  /*switch (type) {
+    case "new_job":
+      description =
+        "un nouveau emploi a ete creer qui reponds a vos qualifications";
+      break;
+    case "like_job":
+      description =
+        receiver.firstName +
+        " " +
+        receiver.lastName +
+        "a aimé votre offre de travail";
+      break;
+    case "comment_job":
+      description =
+        receiver.firstName +
+        " " +
+        receiver.lastName +
+        "a commenté votre offre de travail";
+      break;
+    case "submit_job":
+      description =
+        receiver.firstName +
+        " " +
+        receiver.lastName +
+        "a condidaté à votre offre de travail";
+      break;
+    case "end_job":
+      description =
+        "Votre offre de travail est expiré. veuillez la renouveller ou la retirer";
+      break;
+  }*/
 
   const notification = await Notification.create({
-    id_owner: owner._id,
-    id_receiver: receiver._id,
+    id_owner: owner,
+    id_receiver: receiver,
     description,
     type,
-    job_id
+    job_id,
   });
-  
-  return notification
-  
+  notification.save();
+
+  return notification;
 };
 
 module.exports = {

@@ -30,6 +30,14 @@ function joinChat(socket, io) {
   });
 }
 
+function joinNotification(socket, io) {
+  socket.on("join-notifs", (my_id) => {
+    socket.join(my_id);
+    console.log("user join notifs" + my_id);
+    console.log(socket.rooms);
+  });
+}
+
 function leaveChat(socket, io) {
   socket.on("leaveRoom", (roomName) => {
     socket.leave(roomName);
@@ -58,10 +66,19 @@ function sendMessage(socket, io) {
   });
 }
 
+function sendNotification(socket, io) {
+  socket.on("sendNotification", ({ user_id, data }) => {
+    console.log({ user_id, data });
+    io.to(user_id).emit("notification", { user_id, data });
+  });
+}
+
 module.exports = {
   joinRoom,
   notification_user,
   sendMessage,
   joinChat,
   leaveChat,
+  joinNotification,
+  sendNotification,
 };

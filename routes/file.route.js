@@ -10,7 +10,7 @@ const { uploadImage } = require("../utils/multer");
 
 router.post(
   "/updateUserImage",
-  validateCurrentUserUpdate,
+  // validateCurrentUserUpdate,
   uploadImage,
   fileController.getFileImageName
 );
