@@ -16,7 +16,7 @@ const FileRouter = require("./file.route");
 router.use("/auth", authRotuer);
 router.use("/user", authMiddleware, userRotuer);
 router.use("/file", FileRouter);
-router.use("/job", authMiddleware, jobRouter);
+router.use("/job", jobRouter);
 router.use("/company", authMiddleware, companyRouter);
 router.use("/notification", authMiddleware, notificationRouter);
 router.use("/comment", authMiddleware, commentRouter);

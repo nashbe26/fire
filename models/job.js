@@ -37,6 +37,20 @@ const jobSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
+    job_exp: {
+      type: String,
+      required: true,
+    },
+    job_area: {
+      type: String,
+      required: true,
+    },
+    job_educ_level: {
+      type: String,
+      required: true,
+    },
+
     job_deadline_apply: {
       type: Date,
       required: true,
