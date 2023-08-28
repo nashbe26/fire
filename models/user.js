@@ -17,6 +17,7 @@ const jobSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+ 
   start_date: {
     type: Date,
     required: true
@@ -103,11 +104,20 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  recovery_token:{
+    type:String
+  },
   jobs: [jobSchema],
   education: [educationSchema],
   skills: [skillSchema],
   career_description: {
     type: String
+  },
+  token: {
+    type: String,
+  },
+  verified: {
+  type: Boolean,
   },
   additional_data: {
     type: String

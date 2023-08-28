@@ -21,7 +21,6 @@ const jobSchema = Joi.object({
   job_deadline_apply: Joi.date().required(),
   with_cover: Joi.boolean().required(),
   description_job: Joi.string().required(),
-  small_desc_job: Joi.string().required(),
   company_id: Joi.string().required(),
   candidates: Joi.array().items(candidateSchema),
 });

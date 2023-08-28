@@ -42,7 +42,9 @@ const getJobByName = async (jobs) => {
  *
  */
 const getJobById = async (id, job_params) => {
-  let oneUser = await Job.findById(job_params);
+  let oneUser = await Job.findById(job_params).populate("company_id", {
+    password: 0,
+  });
 
   if (!oneUser) throw createError(401, "Job not Available");
 

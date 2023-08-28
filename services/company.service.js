@@ -3,6 +3,8 @@ const createError = require("http-errors");
 const Company = require("../models/company");
 let mongoose = require("mongoose");
 let bcrypt = require("bcrypt");
+const { generateJWT } = require("../utils/jwt");
+const { sendEmail, verifyYourAccount } = require("../utils/mailer");
 
 /**
  *
@@ -79,12 +81,17 @@ const createCompany = async (id, data) => {
 
   const hash = bcrypt.hashSync(data.password, 10);
   data.password = hash;
+  let varsToken = "LsqSp6YQZi"
 
+  const token = generateJWT({ user: varsToken, role: "company" });;
+  data.token = token;
+  data.verified=false
   let dataUp = new Company(data);
 
   if (!dataUp) throw createError(401, "you can't create a company this");
 
   let oneUser = await dataUp.save();
+  sendEmail(verifyYourAccount({data,token}))
 
   return oneUser;
 };

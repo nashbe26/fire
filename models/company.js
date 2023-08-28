@@ -15,12 +15,18 @@ const companySchema = new mongoose.Schema({
     ref: "Jobs",
   }],
   year: {
-    type: Number,
+    type: String,
     required: true
   },
   number: {
-    type: Number,
+    type: String,
     required: true
+  },
+  token: {
+    type:String,
+  },
+  verified: {
+  type: Boolean,
   },
   telephoneNumber: {
     type: String,
@@ -70,6 +76,9 @@ const companySchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  recovery_token:{
+    type: String
+  }
 });
 
 

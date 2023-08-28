@@ -18,7 +18,10 @@ router.get("/mail_exist/:mail", authController.mailExist);
 
 router.post("/loginCompany", authController.loginCompany);
 router.post("/loginTalent", authController.login);
+router.post("/loginCompanyVerif", authController.loginCompanyVerif);
+router.post("/loginTalentVerif", authController.loginVerif);
 router.post("/forgot-password", authController.forgetAccount);
-router.get("/reset-password", authController.resetAccount);
+router.post("/verif-account/:token", authController.verifMail);
+router.post("/reset-password", authController.resetAccount);
 
 module.exports = router;

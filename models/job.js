@@ -63,11 +63,7 @@ const jobSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    small_desc_job: {
-      type: String,
-      required: true,
-      default: "",
-    },
+   
     status: {
       type: String,
       enum: ["posted", "closed", "expired", "archived"],
