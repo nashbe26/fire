@@ -108,16 +108,14 @@ const deleteCompany = async (data) => {
 
   return oneUser;
 };
-const getMostJobRec = async (id, data) => {
-  let oneUser = await Company.find();
+const updatePassword = async (id, data) => {
+  let oneUser = await Company.findById(id);
+  
+  const hash = bcrypt.hashSync(data.password, 10);
+  oneUser.password = hash;
+  await oneUser.save()
+  return oneUser
 
-  if (!oneUser) throw createError(401, "Failed to get");
-
-  let mostcompanies = oneUser.sort(function (a, b) {
-    return b.cv.length - a.cv.length;
-  });
-
-  return mostcompanies.slice(0, 10);
 };
 
 module.exports = {
@@ -127,4 +125,5 @@ module.exports = {
   createCompany,
   deleteCompany,
   getAllCompany,
+  updatePassword
 };

@@ -1,4 +1,4 @@
-const Notification = require("../Models/notification");
+const Notification = require("../models/notification");
 const httpError = require("http-errors");
 
 const deleteNotification = async (notificationId, userId) => {

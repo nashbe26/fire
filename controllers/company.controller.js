@@ -19,6 +19,12 @@ const updateCompany = asyncHandler(async (req, res) => {
   res.status(200).json(job);
 });
 
+const updatePassword = asyncHandler(async (req, res) => {
+  let user_id = req.user.user._id;
+  let job = await companyService.updatePassword(user_id,req.body);
+  res.status(200).json(job);
+});
+
 // calling update user service
 
 const getCompanyByName = asyncHandler(async (req, res, next) => {
@@ -58,5 +64,6 @@ module.exports = {
     getCompanyByName,    
     updateCompany,
     deleteCompany,
-    getAllCompany
+    getAllCompany,
+    updatePassword
 };

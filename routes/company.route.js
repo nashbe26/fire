@@ -9,6 +9,7 @@ router.get("/getAllCompany", CompanyController.getAllCompany);
 router.get("/getCompanyByName/:name", CompanyController.getCompanyByName);
 router.get("/getCompanyById/:jobId", CompanyController.getCompanyById);
 router.put("/updateCompany/:job_id",validateCurrentCompanyUpdate,CompanyController.updateCompany);
+router.put("/updatePassword",validateCurrentCompanyUpdate,CompanyController.updatePassword);
 router.delete("/deleteCompany/:job_id", CompanyController.deleteCompany);
 
 module.exports = router;    

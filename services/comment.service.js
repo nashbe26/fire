@@ -1,5 +1,5 @@
 const Job = require("../models/company");
-const Comment = require("../Models/Comment");
+const Comment = require("../models/comment");
 const httpError = require("http-errors");
 
 const addComment = async (postId, commentContent, userId) => {
