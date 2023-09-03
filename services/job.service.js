@@ -11,7 +11,7 @@ const Company = require("../models/company");
  *
  */
 const updateJob = async (id, jobid, data) => {
-  let updated = await Job.findOneAndUpdate(jobid, data, {
+  let updated = await Job.findOneAndUpdate({_id:jobid}, data.job, {
     returnOriginal: false,
   });
 

@@ -4,6 +4,7 @@ const router = express.Router();
 const CompanyController = require("../controllers/company.controller");
 const { validateCurrentCompanyUpdate } = require("../middleware/verify.middleware");
 
+router.post("/updateImg", CompanyController.updateImg);
 
 router.get("/getAllCompany", CompanyController.getAllCompany);
 router.get("/getCompanyByName/:name", CompanyController.getCompanyByName);

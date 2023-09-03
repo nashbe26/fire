@@ -43,6 +43,8 @@ const getCompanyByName = async (name) => {
  *  This function will returns current logged user
  *
  */
+
+/*** */
 const getCompanyById = async (job_params) => {
   try {
     let oneUser = await Company.findById(job_params);
@@ -117,7 +119,18 @@ const updatePassword = async (id, data) => {
   return oneUser
 
 };
+const updateImage = async (id, data) => {
+  
+  let oneUser = await Company.findById(id);
 
+  if (!oneUser) throw createError(401, "Failed to get");
+
+  oneUser.cover_photo = "http://localhost:3006/public/images/"+data.img
+
+  const img = await oneUser.save()
+
+  return data;
+};
 module.exports = {
   getCompanyByName,
   getCompanyById,
@@ -125,5 +138,6 @@ module.exports = {
   createCompany,
   deleteCompany,
   getAllCompany,
-  updatePassword
+  updatePassword,
+  updateImage
 };
