@@ -13,6 +13,7 @@ const FileRouter = require("./file.route");
 
 const contactRoute = require("./contact.route");
 const sendEmailsRoute = require("./sendEmails.route");
+const enrollRoute = require("./enroll.route");
 
 /* GET home page. */
 
@@ -28,5 +29,6 @@ router.use("/disccusion", authMiddleware, disRouter);
 
 router.use("/contact", contactRoute);
 router.use("/send-emails", sendEmailsRoute);
+router.use("/enroll-rap", enrollRoute);
 
 module.exports = router;
