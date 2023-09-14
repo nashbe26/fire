@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const isAdminMiddleware = require("../middleware/isAdmin.middleware");
 const {
   createNewContactMessageController,
   getContactMessagesController,
@@ -29,7 +30,7 @@ router.post("/", createNewContactMessageController);
  * @returns {messages[]}
  *
  */
-router.get("/messages", getContactMessagesController);
+router.get("/messages", isAdminMiddleware, getContactMessagesController);
 
 /**
  *
@@ -40,7 +41,7 @@ router.get("/messages", getContactMessagesController);
  * @returns {message}
  *
  */
-router.get("/messages/:id", getContactMessageByIdController);
+router.get("/messages/:id", isAdminMiddleware, getContactMessageByIdController);
 
 /**
  *
@@ -48,6 +49,10 @@ router.get("/messages/:id", getContactMessageByIdController);
  *  @requires <AdminRole>
  *
  */
-router.delete("/messages/:id", deleteContactMessageController);
+router.delete(
+  "/messages/:id",
+  isAdminMiddleware,
+  deleteContactMessageController
+);
 
 module.exports = router;
