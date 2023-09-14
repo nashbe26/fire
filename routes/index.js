@@ -12,6 +12,7 @@ const disRouter = require("./disccusion.route");
 const FileRouter = require("./file.route");
 
 const contactRoute = require("./contact.route");
+const sendEmailsRoute = require("./sendEmails.route");
 
 /* GET home page. */
 
@@ -24,6 +25,8 @@ router.use("/notification", authMiddleware, notificationRouter);
 router.use("/comment", authMiddleware, commentRouter);
 router.use("/message", authMiddleware, messageRouter);
 router.use("/disccusion", authMiddleware, disRouter);
+
 router.use("/contact", contactRoute);
+router.use("/send-emails", sendEmailsRoute);
 
 module.exports = router;
