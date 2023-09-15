@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const isAdminMiddleware = require("../middleware/isAdmin.middleware");
 
 const {
   getUsersController,
@@ -19,7 +20,7 @@ const {
  * @returns {User[]}
  *
  */
-router.get("/users", getUsersController);
+router.get("/users", isAdminMiddleware, getUsersController);
 
 /**
  *
@@ -32,7 +33,7 @@ router.get("/users", getUsersController);
  * @returns {User}
  *
  */
-router.get("/users/:id", getUserByIdController);
+router.get("/users/:id", isAdminMiddleware, getUserByIdController);
 
 /**
  *
@@ -45,7 +46,7 @@ router.get("/users/:id", getUserByIdController);
  * @returns {successStatus}
  *
  */
-router.delete("/users/:id", deleteUserController);
+router.delete("/users/:id", isAdminMiddleware, deleteUserController);
 
 /**
  *
@@ -57,7 +58,7 @@ router.delete("/users/:id", deleteUserController);
  * @returns {Jobs[]}
  *
  */
-router.get("/jobs", getJobsController);
+router.get("/jobs", isAdminMiddleware, getJobsController);
 
 /**
  *
@@ -69,7 +70,7 @@ router.get("/jobs", getJobsController);
  * @returns {Jobs[]}
  *
  */
-router.get("/jobs/:id", getJobByIdController);
+router.get("/jobs/:id", isAdminMiddleware, getJobByIdController);
 
 /**
  *
@@ -81,6 +82,6 @@ router.get("/jobs/:id", getJobByIdController);
  * @returns {successStatus}
  *
  */
-router.delete("/jobs/:id", deleteJobController);
+router.delete("/jobs/:id", isAdminMiddleware, deleteJobController);
 
 module.exports = router;
