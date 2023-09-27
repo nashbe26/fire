@@ -18,6 +18,7 @@ router.get("/mail_exist/:mail", authController.mailExist);
 
 router.post("/loginCompany", authController.loginCompany);
 router.post("/loginTalent", authController.login);
+router.post("/loginAdmin", authController.loginAdmin);
 router.post("/loginCompanyVerif", authController.loginCompanyVerif);
 router.post("/loginTalentVerif", authController.loginVerif);
 router.post("/forgot-password", authController.forgetAccount);
