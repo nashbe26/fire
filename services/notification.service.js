@@ -19,7 +19,20 @@ const deleteNotification = async (notificationId, userId) => {
     return "you can only delete your notification";
   }
 };
+const seenNotif = async (userId) => {
+  const notifications = await Notification.find({ id_receiver: userId }).catch(
+    (err) => {
+      console.log(err);
+      throw httpError(500, "Internal server err");
+    }
+  );
+  notifications.filter(x=>x.is_checked === false).map(async x =>{
+    x.is_checked = true
+    await x.save()
+  })
 
+  return notifications;
+};
 const getNotifications = async (userId) => {
   const notifications = await Notification.find({ id_receiver: userId }).catch(
     (err) => {
@@ -85,4 +98,5 @@ module.exports = {
   deleteNotification,
   getNotifications,
   createNotification,
+  seenNotif
 };

@@ -46,12 +46,10 @@ const educationSchema = new mongoose.Schema({
     required: true
   },
   field: {
-    type: String,
-    required: true
+    type: String
   },
   grad_start_date: {
-    type: Date,
-    required: true
+    type: Date
   },
   grad_end_date: {
     type: Date,

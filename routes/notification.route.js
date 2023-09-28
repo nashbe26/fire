@@ -4,6 +4,7 @@ const notificationController = require("../controllers/notification.controller")
 
 router.get("/get_my_notifs", notificationController.getNotifications);
 router.post("/create", notificationController.CreateNotif);
+router.put("/seenNotif", notificationController.seenNotif);
 router.delete(
   "/delete/:notificationId",
   notificationController.deleteNotification

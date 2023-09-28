@@ -14,10 +14,17 @@ const DiscussionSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    seen:{
+      type:Boolean,
+      default:false
+    },
+    job_title:{
+      type:String,
+    },
     messages: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Messages",
+        ref: "Message",
       },
     ],
   },

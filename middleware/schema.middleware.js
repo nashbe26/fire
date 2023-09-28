@@ -17,7 +17,7 @@ function validateCompanySchema(req, res, next) {
 
   function validateTalentSchema(req, res, next) {
 
-  
+    console.log("ddddddddddddddddddddddd");
     const { error } = talentSchema.validate(req.body);
   
     if (error) {

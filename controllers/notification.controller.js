@@ -31,9 +31,16 @@ const CreateNotif = asyncHandler(async (req, res) => {
   });
   res.status(200).json({ notifications: notifications });
 });
+const seenNotif = asyncHandler(async (req, res) => {
+  const owner = req.user.user._id;
+  const { receiver, description, job_id, type } = req.body;
 
+  let notifications = await notificationServices.seenNotif(req.user.user._id);
+  res.status(200).json({ notifications: notifications });
+});
 module.exports = {
   deleteNotification,
   getNotifications,
   CreateNotif,
+  seenNotif
 };

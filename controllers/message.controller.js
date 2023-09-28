@@ -6,9 +6,10 @@ async function createMessage(req, res) {
     const getDis = await Discussion.findById(req.body.discussionId);
 
     if (!getDis) return new Error("Failed to get discussion");
-
+    
     const UserType = req.user.user.firstName ? "User" : "Company";
-
+    getDis.seen = false;
+    await getDis.save()
     const newMessage = new Message({
       sender: req.user.user._id,
       content: req.body.content,
@@ -26,7 +27,29 @@ async function createMessage(req, res) {
     return res.status(404).json({ msg: "Failed to create Message" });
   }
 }
+async function makeSeen(req, res) {
+  try {
+    let _id = req.user.user;
+    // get discution as
+    const discussions = await Discussion.find({
+      $or: [{ user: _id }, { company: _id }],
+    }).populate('messages')
 
+    discussions.map(x=>{
+      x.messages.filter(dis => dis.seen == false).map(async x =>{
+        x.seen = true;
+        await x.save()
+      })
+      console.log(x);
+    })
+    return discussions;
+
+  } catch (error) {
+    // Handle error
+    console.error(error);
+    return res.status(404).json({ msg: "Failed to create Message" });
+  }
+}
 async function getMessagesInDiscussion(req, res) {
   try {
     const messages = await Message.find({
@@ -57,4 +80,5 @@ module.exports = {
   createMessage,
   getMessagesInDiscussion,
   deleteMessage,
+  makeSeen
 };

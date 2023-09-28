@@ -14,6 +14,10 @@ const MessageSchema = new mongoose.Schema(
     content: {
       type: String,
     },
+    seen:{
+      type:Boolean,
+      default:false
+    },
     discussion: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Discussions",

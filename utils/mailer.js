@@ -24,7 +24,7 @@ emailClient = nodemailer.createTransport({
       to: `${data.email}`,
       subject: `verify Your Account`,
       // text: template('verify-account.txt', { name, email, token, url: process.env.FRONT_URL }),
-      html: template('verify-account.html', { firstName:data.firstName,  tempPass:token, url: process.env.FRONT_URL })
+      html: template('verify-account.html', { firstName:data.firstName ? data.firstName : data.name ,  tempPass:token, url: process.env.FRONT_URL })
     };
   }
   function sendEmail(data) {

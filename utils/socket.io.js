@@ -11,7 +11,6 @@ function joinRoom(socket, io) {
         let arrayTab = [];
         arrayTab.push(socket.id);
         console.log(userId);
-        0;
         onlineUser.push({ userId, userSocket: arrayTab });
       } else {
         userExsit.userSocket.push(socket.id);
@@ -60,16 +59,25 @@ function notification_user(socket, io) {
 }
 
 function sendMessage(socket, io) {
-  socket.on("sendMessage", ({ discussion_id, user_id, message }) => {
-    console.log({ discussion_id, user_id, message });
+  socket.on("sendMessage", ({ discussion_id, user_id, message, sender }) => {
     io.to(discussion_id).emit("message", { user_id, message });
+    let arrF = onlineUser.find((user) => {
+      return user.userId == sender;
+    });
+    console.log(arrF);
+    console.log(onlineUser);
+    if (arrF)
+    arrF.userSocket.map((x) => {
+      io.to(x).emit("newNotifMessage", { user_id, message,discussion:discussion_id });
+    });   
   });
 }
 
 function sendNotification(socket, io) {
   socket.on("sendNotification", ({ user_id, data }) => {
-    console.log({ user_id, data });
-    io.to(user_id).emit("notification", { user_id, data });
+    let newObj = {...data,is_checked : false}
+    console.log({ user_id, newObj });
+    io.to(user_id).emit("notification", { user_id, newObj });
   });
 }
 

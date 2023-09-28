@@ -3,6 +3,7 @@ const router = express.Router();
 const DiscussionController = require("../controllers/discussion.controller");
 
 router.post("/createDiscussions", DiscussionController.createDiscussion);
+router.post("/makeSeen/:id", DiscussionController.makeSeen);
 router.get("/getMyDiscussions", DiscussionController.getMyDiscussion);
 router.get("/getDiscussions/:discussionId", DiscussionController.getDiscussion);
 router.delete(

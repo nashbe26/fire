@@ -15,13 +15,14 @@ const educationSchema = Joi.object({
   school_name: Joi.string().required(),
   school_location: Joi.string().required(),
   degree: Joi.string().required(),
-  field: Joi.string().required(),
-  grad_start_date: Joi.date().required(),
+  field: Joi.string().allow(''),
+  grad_start_date: Joi.date(),
   grad_end_date: Joi.date().required(),
 });
 
 const skillSchema = Joi.object({
   skill: Joi.string().required(),
+  
 });
 
 const talentSchema = Joi.object({
