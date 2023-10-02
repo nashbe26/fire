@@ -5,7 +5,7 @@ const {
   createNewContactMessage,
   getContactMessages,
   getContactMessageById,
-  deleteContactMessageById,
+  deleteContactMessages,
 } = require("../services/contact.service");
 
 const createNewContactMessageController = asyncHandler(async (req, res) => {
@@ -48,7 +48,7 @@ const getContactMessageByIdController = asyncHandler(async (req, res) => {
 });
 
 const deleteContactMessageController = asyncHandler(async (req, res) => {
-  await deleteContactMessageById(req.params.id);
+  await deleteContactMessages(req.body.data);
   return res.json({
     success: true,
   });

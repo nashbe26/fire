@@ -74,14 +74,16 @@ router.get("/jobs/:id", isAdminMiddleware, getJobByIdController);
 
 /**
  *
- * Takes DELETE Request at <API>/admin/jobs/<jobId>
+ * Takes DELETE Request at <API>/admin/jobs
  * to DELETE job
  *
  * @requires <AdminRole>
  *
+ * @param data <jobId[]>
+ *
  * @returns {successStatus}
  *
  */
-router.delete("/jobs/:id", isAdminMiddleware, deleteJobController);
+router.delete("/jobs", isAdminMiddleware, deleteJobController);
 
 module.exports = router;
