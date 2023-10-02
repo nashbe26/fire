@@ -5,20 +5,20 @@ const createNewContactMessage = async (data) => {
 };
 
 const getContactMessages = async () => {
-  return await Contact.find().select("-message");
+  return await Contact.find().select("-__v");
 };
 
 const getContactMessageById = async (id) => {
   return await Contact.findById(id);
 };
 
-const deleteContactMessageById = async (id) => {
-  return await Contact.findByIdAndDelete(id);
+const deleteContactMessages = async (id) => {
+  return await Contact.deleteMany({ _id: { $in: id } });
 };
 
 module.exports = {
   createNewContactMessage,
   getContactMessages,
   getContactMessageById,
-  deleteContactMessageById,
+  deleteContactMessages,
 };

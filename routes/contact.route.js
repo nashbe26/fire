@@ -45,14 +45,10 @@ router.get("/messages/:id", isAdminMiddleware, getContactMessageByIdController);
 
 /**
  *
- * Takes DELETE request at <api>/contact/messages/:<messageId>
+ * Takes DELETE request at <api>/contact/messages
  *  @requires <AdminRole>
  *
  */
-router.delete(
-  "/messages/:id",
-  isAdminMiddleware,
-  deleteContactMessageController
-);
+router.delete("/messages", isAdminMiddleware, deleteContactMessageController);
 
 module.exports = router;
