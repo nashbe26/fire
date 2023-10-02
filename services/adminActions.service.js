@@ -3,7 +3,7 @@ const Job = require("../models/job");
 
 //user services
 const getUsers = async () => {
-  return await User.find({ role: "USER" }).select(
+  return await User.find({ role: { $ne: "ADMIN" } }).select(
     "-password -__v -jobs -education -skills"
   );
 };
