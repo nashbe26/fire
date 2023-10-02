@@ -3,7 +3,9 @@ const Job = require("../models/job");
 
 //user services
 const getUsers = async () => {
-  return await User.find().select("-password -__v -jobs -education -skills");
+  return await User.find({ role: "USER" }).select(
+    "-password -__v -jobs -education -skills"
+  );
 };
 
 const getUserById = async (id) => {
