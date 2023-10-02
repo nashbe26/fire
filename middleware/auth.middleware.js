@@ -20,8 +20,8 @@ module.exports = (req, res, next) => {
       throw httpError(401, "failed to verify");
     }
 
-    req.user = data.user;
-    req.role = data.user.role;
+    req.user = data.user.user;
+    req.role = data.user.user.role;
 
     next();
   } catch (e) {

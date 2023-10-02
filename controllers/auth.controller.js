@@ -60,6 +60,7 @@ const loginAdmin = asyncHandler(async (req, res, _) => {
     email: response.email,
     photo: response.photo,
     cover_photo: response.cover_photo,
+    role: response.role,
   };
   const token = generateJWT({ user: responseData });
 
