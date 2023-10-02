@@ -18,15 +18,15 @@ const deleteUser = async (id) => {
 
 //job services
 const getJobs = async () => {
-  return await Job.find().select("-__v");
+  return await Job.find().select("-__v").populate("company_id");
 };
 
 const getJobById = async (id) => {
   return await Job.findById(id);
 };
 
-const deleteJob = async (data) => {
-  return await Job.deleteMany({ _id: { $in: data } });
+const deleteJob = async (id) => {
+  return await Job.findByIdAndDelete(id);
 };
 
 module.exports = {

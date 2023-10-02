@@ -84,6 +84,6 @@ router.get("/jobs/:id", isAdminMiddleware, getJobByIdController);
  * @returns {successStatus}
  *
  */
-router.delete("/jobs", isAdminMiddleware, deleteJobController);
+router.delete("/jobs/:id", isAdminMiddleware, deleteJobController);
 
 module.exports = router;

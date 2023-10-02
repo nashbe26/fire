@@ -122,7 +122,7 @@ const getUsers = async (id) => {
     createdAt: 0,
     updatedAt: 0,
   });
-  let role = "talent";
+  let role = oneUser.role === "ADMIN" ? "ADMIN" : "talent";
 
   if (!oneUser) {
     oneUser = await Company.findById(id, {

@@ -35,8 +35,8 @@ const getJobByIdController = asyncHandler(async (req, res) => {
 });
 
 const deleteJobController = asyncHandler(async (req, res) => {
-  console.log("BBB", req.body.data);
-  await deleteJob(req.body.data);
+  // console.log("BBB", req.body.data);
+  await deleteJob(req.params.id);
   return res.json({ success: true });
 });
 
