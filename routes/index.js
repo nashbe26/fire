@@ -11,6 +11,11 @@ const messageRouter = require("./message.route");
 const disRouter = require("./disccusion.route");
 const FileRouter = require("./file.route");
 
+const contactRoute = require("./contact.route");
+const sendEmailsRoute = require("./sendEmails.route");
+const enrollRoute = require("./enroll.route");
+const adminActionsRoute = require("./adminActions.route");
+
 /* GET home page. */
 
 router.use("/auth", authRotuer);
@@ -22,5 +27,10 @@ router.use("/notification", authMiddleware, notificationRouter);
 router.use("/comment", authMiddleware, commentRouter);
 router.use("/message", authMiddleware, messageRouter);
 router.use("/disccusion", authMiddleware, disRouter);
+
+router.use("/contact", contactRoute);
+router.use("/send-emails", sendEmailsRoute);
+router.use("/enroll-rap", enrollRoute);
+router.use("/admin", adminActionsRoute);
 
 module.exports = router;

@@ -4,7 +4,8 @@ const userService = require("../services/user.service");
 // calling get user service
 
 const getUsers = asyncHandler(async (req, res) => {
-  let { user, role } = req.user;
+  let user = req.user;
+  console.log("one user", user, user.role);
   const response = await userService.getUsers(user._id);
   res.status(200).json(response);
 });

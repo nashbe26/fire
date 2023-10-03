@@ -43,6 +43,37 @@ const login = asyncHandler(async (req, res, _) => {
   });
 });
 
+const loginAdmin = asyncHandler(async (req, res, _) => {
+  let response = await authService.login(req.body);
+  if (response.role != "ADMIN")
+    throw createError(404, `Failed to login due some reasons (not admin))`);
+
+  let responseData = {
+    _id: response._id,
+    firstName: response.firstName,
+    sureName: response.sureName,
+    profession: response.profession,
+    city: response.city,
+    country: response.country,
+    postal_code: response.postal_code,
+    phone: response.phone,
+    email: response.email,
+    photo: response.photo,
+    cover_photo: response.cover_photo,
+    role: response.role,
+  };
+  const token = generateJWT({ user: responseData });
+
+  if (!token) throw createError(404, `Failed to login due some reasons`);
+
+  res.status(200).json({
+    data: {
+      token,
+      response: responseData,
+    },
+  });
+});
+
 const loginCompany = asyncHandler(async (req, res, _) => {
   let response = await authService.loginCompany(req.body);
 
@@ -153,14 +184,14 @@ const forgetAccount = asyncHandler(async (req, res, _) => {
 });
 
 const resetAccount = asyncHandler(async (req, res, _) => {
-  const password  = req.body;
+  const password = req.body;
   const data = await authService.resetAccount(password);
-  res.status(200).json({result :data });
+  res.status(200).json({ result: data });
 });
 const changePassword = asyncHandler(async (req, res, _) => {
-  const password  = req.body;
+  const password = req.body;
   const data = await authService.changePassword(password);
-  res.status(200).json({result :data });
+  res.status(200).json({ result: data });
 });
 const mailExist = asyncHandler(async (req, res, _) => {
   const result = await authService.mail_exist(req.params.mail);
@@ -169,12 +200,13 @@ const mailExist = asyncHandler(async (req, res, _) => {
 
 const verifMail = asyncHandler(async (req, res, _) => {
   const result = await authService.verifMail(req.params.token);
-  res.status(200).json({ results:result.results,type:result.type });
+  res.status(200).json({ results: result.results, type: result.type });
 });
 
 module.exports = {
   register,
   login,
+  loginAdmin,
   forgetAccount,
   resetAccount,
   loginCompany,
@@ -182,5 +214,5 @@ module.exports = {
   verifMail,
   loginCompanyVerif,
   loginVerif,
-  changePassword
+  changePassword,
 };

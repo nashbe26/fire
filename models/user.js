@@ -1,49 +1,49 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const jobSchema = new mongoose.Schema({
   job_title: {
     type: String,
-    required: true
+    required: true,
   },
   employ: {
     type: String,
-    required: true
+    required: true,
   },
   city: {
     type: String,
-    required: true
+    required: true,
   },
   country: {
     type: String,
-    required: true
+    required: true,
   },
- 
+
   start_date: {
     type: Date,
-    required: true
+    required: true,
   },
   end_date: {
     type: Date,
-    required: true
+    required: true,
   },
   job_description: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const educationSchema = new mongoose.Schema({
   school_name: {
     type: String,
-    required: true
+    required: true,
   },
   school_location: {
     type: String,
-    required: true
+    required: true,
   },
   degree: {
     type: String,
-    required: true
+    required: true,
   },
   field: {
     type: String
@@ -53,81 +53,88 @@ const educationSchema = new mongoose.Schema({
   },
   grad_end_date: {
     type: Date,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const skillSchema = new mongoose.Schema({
   skill: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
+
+const RoleEnums = ["ADMIN", "USER"];
 
 const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
-    required: true
+    required: true,
   },
   sureName: {
     type: String,
-    required: true
+    required: true,
   },
   profession: {
     type: String,
-    required: true
+    required: true,
   },
-  password:{
-
+  password: {
     type: String,
-    required: true
+    required: true,
   },
   city: {
     type: String,
-    required: true
+    required: true,
   },
   country: {
     type: String,
-    required: true
+    required: true,
   },
   postal_code: {
     type: String,
-    required: true
+    required: true,
   },
   phone: {
     type: String,
-    required: true
+    required: true,
   },
   email: {
     type: String,
-    required: true
+    required: true,
   },
-  recovery_token:{
-    type:String
+  recovery_token: {
+    type: String,
   },
   jobs: [jobSchema],
   education: [educationSchema],
   skills: [skillSchema],
   career_description: {
-    type: String
+    type: String,
   },
   token: {
     type: String,
   },
   verified: {
-  type: Boolean,
+    type: Boolean,
   },
   additional_data: {
-    type: String
+    type: String,
   },
-  photo:{
-    type:String
+  photo: {
+    type: String,
   },
-  cover_photo:{
-    type:String
-  }
+  cover_photo: {
+    type: String,
+  },
+  role: {
+    type: String,
+    required: true,
+    enum: RoleEnums,
+    default: RoleEnums[1],
+  },
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
