@@ -3,7 +3,7 @@ const handlebars = require('handlebars');
 const fs = require('fs');
 
 const template = (fileName, data) => {
-    const content = fs.readFileSync("./views/" + fileName).toString();
+    const content = fs.readFileSync("../views/" + fileName).toString();
     const inject = handlebars.compile(content);
     return inject(data);
   };

@@ -30,7 +30,7 @@ async function createMessage(req, res) {
 async function makeSeen(req, res) {
   try {
     let _id = req.user.user;
-    // get discution as
+
     const discussions = await Discussion.find({
       $or: [{ user: _id }, { company: _id }],
     }).populate('messages')
