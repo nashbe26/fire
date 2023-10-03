@@ -17,7 +17,7 @@ const {
  * @returns {message}
  *
  */
-router.post("/", createNewEnrollController);
+router.post("/create", createNewEnrollController);
 
 /**
  * Takes GET request at <API>/enroll-rap/messages/:<messageId>

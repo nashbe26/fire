@@ -48,7 +48,7 @@ const getContactMessageByIdController = asyncHandler(async (req, res) => {
 });
 
 const deleteContactMessageController = asyncHandler(async (req, res) => {
-  await deleteContactMessages(req.body.data);
+  await deleteContactMessages(req.params.id);
   return res.json({
     success: true,
   });

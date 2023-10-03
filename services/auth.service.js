@@ -97,6 +97,8 @@ const login = async (body) => {
   else return user;
 };
 
+
+
 const loginCompany = async (body) => {
   if (!body.email || !body.password)
     throw createError(400, `body is missing abs!`);
@@ -204,6 +206,38 @@ const resetAccount = async (data) => {
   }
 };
 
+/**
+ *
+ * This Function will login user to his own account by checking if email and password exists
+ *
+ */
+const registerAdmin = async (data) => {
+  
+  const similarUsers = await User.findOne({ email: data.email.toLowerCase() });
+
+  if (similarUsers)
+    throw createError(401, `User with same Email already Exist!`);
+
+  const hash = bcrypt.hashSync(data.password, 10);
+
+  data.password = hash;
+  data.email = data.email.toLowerCase();
+  const token = generateJWT({ user: varsToken, role: "admin" });
+  data.token = token;
+  data.role.toLowerCase() ==="admin" ? data.verified = true : data.verified = false;
+  
+  let userCreated = await User.create(data);
+
+  if (!userCreated) throw createError(401, "can't Create User");
+
+  if(data.role.toLowerCase() !=="admin" ){
+    sendEmail(verifyYourAccount({ data, token }));
+
+  }
+  return userCreated;
+};
+
+
 module.exports = {
   register,
   login,
@@ -214,4 +248,5 @@ module.exports = {
   verifMail,
   loginVerif,
   loginCompanyVerif,
+  registerAdmin
 };

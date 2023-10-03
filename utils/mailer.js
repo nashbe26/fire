@@ -3,7 +3,7 @@ const handlebars = require("handlebars");
 const fs = require("fs");
 
 const template = (fileName, data) => {
-    const content = fs.readFileSync("../views/" + fileName).toString();
+    const content = fs.readFileSync("./views/" + fileName).toString();
     const inject = handlebars.compile(content);
     return inject(data);
   };
@@ -31,6 +31,32 @@ function verifyYourAccount({ data, token }) {
     }),
   };
 }
+
+function sendEmailToUser({ data}) {
+
+  return {
+    from: process.env.EMAIL_NODEMAILER,
+    to: `${data.email}`,
+    subject:data.object,
+    // text: template('verify-account.txt', { name, email, token, url: process.env.FRONT_URL }),
+    html: template("model-email.html", {
+      text: data.content,
+    }),
+  };
+}
+function multipleMails({ data}) {
+  console.log(data);
+  const emailAddresses = data.usersId;
+  console.log(emailAddresses);
+  
+  return {
+    from: process.env.EMAIL_NODEMAILER,
+    to: emailAddresses.join(', '),
+    subject: data.object,
+    html: data.content,
+  };
+}
+
 function sendEmail(data) {
   if (!emailClient) {
     return;
@@ -67,4 +93,6 @@ module.exports = {
   forgotPasswordEmail,
   sendEmail,
   emailClient,
+  sendEmailToUser,
+  multipleMails
 };

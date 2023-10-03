@@ -1,24 +1,22 @@
-const { emailClient } = require("../utils/mailer");
+const { emailClient, sendEmail, sendEmailToUser, multipleMails } = require("../utils/mailer");
 
 const sendEmails = (data) => {
-  const { senderEmail, to, subject, html, text, attachments } = data;
-  console.log(process.env.MAILER_SMTP_PORT);
+  let send = sendEmail(sendEmailToUser({ data }));
+  if(send)
+    return 'email sent successfully'
+  else 
+  throw createError(401, `Error to send email`);
 
-  const mailOptions = {
-    from: senderEmail || process.env.EMAIL_NODEMAILER,
-    subject,
-    to: Array.isArray(to) ? to.join(", ") : to,
-    ...(text ? { text } : {}),
-    ...(html ? { html } : {}),
-    ...(attachments ? { attachments } : {}),
-  };
-
-  return new Promise((resolve, reject) =>
-    emailClient.sendMail(mailOptions, (err, info) => {
-      if (err) reject(err);
-      else resolve(info);
-    })
-  );
 };
 
-module.exports = { sendEmails };
+const sendMultiEmails = (data) => {
+  console.log(data);
+  let send = sendEmail(multipleMails({ data }));
+  if(send)
+    return 'email sent successfully'
+  else 
+  throw createError(401, `Error to send email`);
+
+};
+
+module.exports = { sendEmails,sendMultiEmails };

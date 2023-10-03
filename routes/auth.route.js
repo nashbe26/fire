@@ -9,6 +9,8 @@ const {
 } = require("../middleware/schema.middleware");
 
 router.post("/registerTalent", validateTalentSchema, authController.register);
+router.post("/registerAdmin", validateTalentSchema, authController.registerAdmin);
+
 router.post(
   "/registerCompany",
   validateCompanySchema,

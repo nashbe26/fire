@@ -40,6 +40,7 @@ const talentSchema = Joi.object({
   skills: Joi.array().items(skillSchema),
   career_description: Joi.string().optional(),
   additional_data: Joi.string().optional(),
+  role: Joi.string().optional()
 });
 
 module.exports = talentSchema;

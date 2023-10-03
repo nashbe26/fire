@@ -18,7 +18,7 @@ const {
  *
  *
  */
-router.post("/", createNewContactMessageController);
+router.post("/create", createNewContactMessageController);
 
 /**
  *
@@ -49,6 +49,6 @@ router.get("/messages/:id", isAdminMiddleware, getContactMessageByIdController);
  *  @requires <AdminRole>
  *
  */
-router.delete("/messages", isAdminMiddleware, deleteContactMessageController);
+router.delete("/messages/:id", isAdminMiddleware, deleteContactMessageController);
 
 module.exports = router;

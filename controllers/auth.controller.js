@@ -8,6 +8,12 @@ const register = asyncHandler(async (req, res) => {
   const user = await authService.register(req.body);
   res.status(200).json(user);
 });
+//Calling register Service
+
+const registerAdmin = asyncHandler(async (req, res) => {
+  const user = await authService.registerAdmin(req.body);
+  res.status(200).json(user);
+});
 
 //Calling login Service
 
@@ -215,4 +221,5 @@ module.exports = {
   loginCompanyVerif,
   loginVerif,
   changePassword,
+  registerAdmin
 };

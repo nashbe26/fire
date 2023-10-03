@@ -1,7 +1,7 @@
 const router = require("express").Router();
 
 const {
-    sendEmailsController,
+    sendEmailsController, sendEmailsMultiController,
 } = require("../controllers/sendEmails.controller");
 const isAdminMiddleware = require("../middleware/isAdmin.middleware");
 
@@ -18,6 +18,7 @@ const isAdminMiddleware = require("../middleware/isAdmin.middleware");
  * @param text {string}
  * @param attachments {String | Object | String[] | Object[]} // https://nodemailer.com/message/attachments/
  */
-router.post("/", isAdminMiddleware, sendEmailsController);
+router.post("/sendOne", isAdminMiddleware, sendEmailsController);
+router.post("/sendMulti", isAdminMiddleware, sendEmailsMultiController);
 
 module.exports = router;
