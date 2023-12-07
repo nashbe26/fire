@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const createError = require("http-errors");
 const Job = require("../models/job");
+
 const { addProblemReminderNotificationCronJob } = require("../utils/cron");
 let mongoose = require("mongoose");
 const Company = require("../models/company");
@@ -44,7 +45,13 @@ const getJobByName = async (jobs) => {
 const getJobById = async (id, job_params) => {
   let oneUser = await Job.findById(job_params).populate("company_id", {
     password: 0,
-  });
+  }).populate({
+    path: 'candidates',
+    populate: {
+        path: 'id_condidate',
+        model: 'User'
+    }
+});;
 
   if (!oneUser) throw createError(401, "Job not Available");
 
@@ -57,7 +64,13 @@ const getJobById = async (id, job_params) => {
  *
  */
 const getAllJobs = async (id, job_params) => {
-  let oneUser = await Job.find().populate("company_id", { password: 0 });
+  let oneUser = await Job.find({status:"Active"}).populate("company_id comments likes", { password: 0 }).populate({
+    path: 'comments',
+    populate: {
+        path: 'id_owner',
+        model: 'User'
+    }
+});
 
   if (!oneUser) throw createError(401, "User not Available");
 
@@ -81,25 +94,24 @@ const getAllJobsComp = async (id) => {
 
 const createJob = async (id, data) => {
   try {
+
     data.company_id = id;
-
-    console.log(data);
-
     let job = new Job(data);
+
     let new_job = await job.save();
 
-    if (!new_job) throw createError(401, "Failed to create new job");
 
-    let get_comp = await Company.findById(id);
-    get_comp.jobs.push(new_job);
-    console.log(get_comp);
+    let get_comp = await User.findById(id);
+
+    get_comp.own_jobs.push(new_job._id);
+
     await get_comp.save();
 
-    if (!get_comp) throw createError(401, "you can't create a job this");
+    return get_comp;
 
-    return oneUser;
   } catch (err) {
     console.log(err);
+    return  createError(401, "you can't create a job this");
   }
 };
 
@@ -117,6 +129,78 @@ const deleteJob = async (id, data) => {
 
   return oneUser;
 };
+
+/**
+ *
+ *  This Function will update user password
+ *
+ */
+const updateJobStatus = async (id, data) => {
+  console.log(id, data);
+  let jobs = await Job.findByIdAndUpdate(id,{status:data.status});
+
+  if (!jobs) throw createError(401, "Failed to update");
+
+  return jobs;
+};
+
+const updateJobStatsUser = async (data) => {
+  let jobs = await Job.findById(data.id_job);
+  let user = await User.findById(data.data.id_user);
+
+  if (!jobs) throw createError(401, "Failed to update");
+  if (!user) throw createError(401, "Failed to update");
+
+  jobs.candidates.map(async x=>{
+    if(
+    x.id_condidate == data.id_user)
+      x.status=data.status
+      await jobs.save()
+  })
+
+  user.my_condidate.map(async x=>{
+    if(
+    x.id_condidate == data.id_user)
+      x.status=data.status
+      await user.save()
+  })
+
+  return jobs;
+};
+
+/*
+ *
+ *  This Function will update user password
+ *
+ */
+const likedJobs = async (id, user_id) => {
+  let job = await Job.findById(id);
+
+  if (!job) {
+    throw createError(404, "Job not found");
+  }
+
+  const existingLikeIndex = job.likes.findIndex(like => like.owner_id == user_id);
+
+  if (existingLikeIndex !== -1) {
+    // If the user has already liked the job, remove the like
+    job.likes.splice(existingLikeIndex, 1);
+  } else {
+    // If the user has not liked the job, add the like
+    const newLike = {
+      owner_id: user_id,
+      receiver_id: job.company_id,
+    };
+
+    job.likes.push(newLike);
+
+  }
+
+  await job.save();
+
+  return { owner_id: user_id, job_id: job._id, receiver_id: job.company_id };
+};
+
 const getMostJobRec = async (id, data) => {
   let oneUser = await Job.find();
 
@@ -152,7 +236,24 @@ const condidateJob = async (data, idJob) => {
 
   return newCondidate;
 };
+const savedJob = async (id, user_id) => {
 
+  let users = await User.findById(id);
+  const index = users.saved_job.indexOf(user_id);
+
+  if (index === -1) {
+    // If not, add the job ID
+    users.saved_job.push(user_id);
+  } else {
+    // If yes, remove the job ID
+    users.saved_job.splice(index, 1);
+  }
+
+  // Save the updated user
+  await users.save();
+
+  return users
+};
 const UpdateCondidate = async (id, state) => {
   try {
     console.log(id, state);
@@ -196,4 +297,8 @@ module.exports = {
   getAllJobsComp,
   condidateJob,
   UpdateCondidate,
+  updateJobStatus,
+  likedJobs,
+  savedJob,
+  updateJobStatsUser
 };

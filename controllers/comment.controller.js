@@ -5,7 +5,8 @@ const commentServices = require("../services/comment.service");
 const addComment = asyncHandler(async(req,res)=> {
     const postId =req.params.postId;
     const commentContent = req.body.commentContent;
-    let newComment = await commentServices.addComment(postId,commentContent,req.user);
+    const id_receiver = req.body.id_receiver;
+    let newComment = await commentServices.addComment(postId,commentContent,req.user,id_receiver);
     res.status(200).json(newComment); 
 
 });

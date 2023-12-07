@@ -52,6 +52,7 @@ const register = async (data) => {
   const hash = bcrypt.hashSync(data.password, 10);
 
   data.password = hash;
+  data.role = data.enterprise ? "recruter" : "USER";
   data.email = data.email.toLowerCase();
   const token = generateJWT({ user: varsToken, role: "talent" });
   data.token = token;

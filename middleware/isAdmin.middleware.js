@@ -5,7 +5,7 @@ const User = require("../models/user");
 module.exports = [
   authMiddleware,
   async (req, res, next) => {
-    const user = await User.findOne({ _id: req.user._id, role: "ADMIN" });
+    const user = await User.findOne({ _id: req.user.user._id, role: "ADMIN" });
     if (!user) {
       next(createError(401));
       return;

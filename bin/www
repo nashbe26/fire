@@ -16,6 +16,7 @@ const {
   leaveChat,
   joinNotification,
   sendNotification,
+  notification_all_user,
 } = require("../utils/socket.io");
 //const { addOnlineUser } = require('../utils/socket.io');
 
@@ -122,6 +123,7 @@ io.on("connection", (socket) => {
   leaveChat(socket, io);
   joinNotification(socket, io);
   sendNotification(socket, io);
+  notification_all_user(socket, io)
 });
 
 /**

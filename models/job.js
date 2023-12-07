@@ -4,15 +4,13 @@ const candidateSchema = new mongoose.Schema(
   {
     id_condidate: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Users",
+      ref: "User",
     },
-    checked_before: false,
     status: {
       type: String,
-      enum: ["refused", "accepted", "pending"],
-      default: "pending",
+      default: "En attente",
     },
-    cover_text: {
+    cv: {
       type: String,
     },
   },
@@ -23,57 +21,63 @@ const jobSchema = new mongoose.Schema(
   {
     job_title: {
       type: String,
-      required: true,
     },
-    work_type: {
-      type: String,
-      required: true,
-    },
+
     job_location: {
       type: String,
-      required: true,
+    },
+    job_country: {
+      type: String,
     },
     job_type: {
       type: String,
-      required: true,
     },
 
     job_exp: {
       type: String,
-      required: true,
     },
     job_area: {
       type: String,
-      required: true,
     },
     job_educ_level: {
       type: String,
-      required: true,
     },
 
     job_deadline_apply: {
       type: Date,
-      required: true,
     },
     with_cover: {
       type: Boolean,
-      required: true,
     },
     description_job: {
       type: String,
-      required: true,
     },
-   
+    description_diplomat: {
+      type: String,
+    },
     status: {
       type: String,
-      enum: ["posted", "closed", "expired", "archived"],
-      default: "posted",
+      default: "Active",
     },
     company_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Company",
-      required: true,
+      ref: "User",
     },
+    likes: [
+      {
+        owner_id:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+        },
+        reveiver_id:{
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+      },
+  }],
+    comments:[{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Comments",
+    }],
     candidates: [candidateSchema],
   },
   { timestamps: true }

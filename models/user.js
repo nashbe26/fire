@@ -3,110 +3,121 @@ const mongoose = require("mongoose");
 const jobSchema = new mongoose.Schema({
   job_title: {
     type: String,
-    required: true,
+    
   },
   employ: {
     type: String,
-    required: true,
+    
   },
   city: {
     type: String,
-    required: true,
+    
   },
   country: {
     type: String,
-    required: true,
+    
   },
 
-  start_date: {
-    type: Date,
-    required: true,
-  },
-  end_date: {
-    type: Date,
-    required: true,
+  years: {
+    type: String,
+    
   },
   job_description: {
     type: String,
-    required: true,
+    
+  },
+  type:{
+    type: String,
+    
+  },
+  start_date: {
+    type: String
+  },
+  end_date: {
+    type: String,
+    
   },
 });
 
 const educationSchema = new mongoose.Schema({
   school_name: {
     type: String,
-    required: true,
+    
   },
-  school_location: {
-    type: String,
-    required: true,
-  },
+
   degree: {
     type: String,
-    required: true,
+    
   },
-  field: {
-    type: String
+  desc: {
+    type: String,
+    
   },
   grad_start_date: {
-    type: Date
+    type: String
   },
   grad_end_date: {
-    type: Date,
-    required: true,
+    type: String,
+    
   },
 });
 
 const skillSchema = new mongoose.Schema({
   skill: {
     type: String,
-    required: true,
+    
   },
 });
 
-const RoleEnums = ["ADMIN", "USER"];
+const RoleEnums = ["USER", "recruter"];
 
 const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
-    required: true,
+    
   },
-  sureName: {
+  lastName: {
     type: String,
-    required: true,
+    
   },
-  profession: {
+  enterprise: {
     type: String,
-    required: true,
+    
   },
   password: {
     type: String,
-    required: true,
+    
   },
   city: {
     type: String,
-    required: true,
+    
   },
   country: {
     type: String,
-    required: true,
+    
   },
   postal_code: {
     type: String,
-    required: true,
+    
   },
-  phone: {
+  numTel: {
     type: String,
-    required: true,
+    
   },
   email: {
     type: String,
-    required: true,
+    
   },
   recovery_token: {
     type: String,
   },
   jobs: [jobSchema],
+  own_jobs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Job",
+    }
+  ],
   education: [educationSchema],
   skills: [skillSchema],
   career_description: {
@@ -114,6 +125,15 @@ const userSchema = new mongoose.Schema({
   },
   token: {
     type: String,
+  },
+  views: {
+    type: Number,
+    default:0
+ 
+  },
+  cv: {
+    type: String,
+ 
   },
   verified: {
     type: Boolean,
@@ -127,9 +147,33 @@ const userSchema = new mongoose.Schema({
   cover_photo: {
     type: String,
   },
+  my_condidate:[{
+    id_condidate:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Job",
+    },
+    status:{
+      type: String,
+    },
+    cv:{
+      type: String,
+    },
+    job_id:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Job",
+    }
+  }],
+  saved_job:[{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Job",
+  }],
+  comments:[{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Comment",
+  }],
   role: {
     type: String,
-    required: true,
+    
     enum: RoleEnums,
     default: RoleEnums[1],
   },

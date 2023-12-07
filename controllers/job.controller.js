@@ -38,6 +38,15 @@ const getAllJob = asyncHandler(async (req, res, next) => {
 
   res.status(200).json(job);
 });
+const likedJobs = asyncHandler(async (req, res, next) => {
+
+  const name = req.params.jobId;
+  console.log(req.user);
+  const job = await jobService.likedJobs(name,req.user._id);
+
+  res.status(200).json(job);
+  
+});
 
 const getCompanyJobs = asyncHandler(async (req, res, next) => {
   let { user } = req.user;
@@ -48,7 +57,7 @@ const getCompanyJobs = asyncHandler(async (req, res, next) => {
 });
 
 const createJob = asyncHandler(async (req, res, next) => {
-  const id = req.user.user._id;
+  const id = req.user._id;
   const job = await jobService.createJob(id, req.body);
 
   res.status(200).json({ message: "Job successfully created", job });
@@ -65,7 +74,7 @@ const deleteJob = asyncHandler(async (req, res, next) => {
 const condidateJob = asyncHandler(async (req, res, next) => {
   console.log(req.user);
 
-  const id = req.user.user._id;
+  const id = req.user._id;
   let data = {
     id,
     cover: req.body.cover,
@@ -83,6 +92,32 @@ const UpdateCandidate = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({ message: "Job successfully deleted" });
 });
+const updateJobStatus = asyncHandler(async (req, res, next) => {
+
+  const id = req.params.jobId;
+  const status = req.body;
+  console.log(status);
+  const condidate = await jobService.updateJobStatus(id, status);
+
+  res.status(200).json({ message: "Job successfully deleted" });
+});
+const updateStatusJobUser = asyncHandler(async (req, res, next) => {
+
+  const status = req.body;
+  console.log(status);
+  const condidate = await jobService.updateJobStatsUser( status);
+
+  res.status(200).json({ message: condidate});
+});
+const updateSavedJob = asyncHandler(async (req, res, next) => {
+  console.log(req.user);
+
+  const id = req.user._id;
+  const jobId=req.params.jobId
+  const job = await jobService.savedJob(id, jobId);
+
+  res.status(200).json({ message: "Job successfully sent" });
+});
 
 module.exports = {
   getJobById,
@@ -94,4 +129,8 @@ module.exports = {
   getAllJob,
   condidateJob,
   UpdateCandidate,
+  updateJobStatus,
+  likedJobs,
+  updateSavedJob,
+  updateStatusJobUser
 };

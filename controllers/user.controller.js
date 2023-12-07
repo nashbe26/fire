@@ -43,8 +43,8 @@ const sendCV = asyncHandler(async (req, res) => {
 // calling add photo service
 
 const sendToRec = asyncHandler(async (req, res) => {
-  let user_id = req.user;
   let { job_id } = req.params;
+  let { user_id } = req.params;
 
   let users = await userService.sendToRec(user_id, job_id);
 
@@ -54,8 +54,7 @@ const sendToRec = asyncHandler(async (req, res) => {
 // calling update user sevcice
 
 const updateUser = asyncHandler(async (req, res) => {
-  let user_id = req.user.user._id;
-
+  let user_id = req.user._id;
   let users = await userService.updateUser(user_id, req.body);
   res.status(200).json(users);
 });
@@ -76,7 +75,30 @@ const updateUserViews = asyncHandler(async (req, res) => {
   let views = await userService.updateUserViews(user_id, id);
   res.status(200).json(views);
 });
+const updateImg = asyncHandler(async (req, res, next) => {
+  const id = req.user._id;
+  if (!req.file) {
+    const error = new Error("No File");
+    error.httpStatusCode = 400;
+    return next(error);
+  }
+  
+  const job = await userService.updateImage(id,req.file.originalname);
 
+  res.status(200).json({ message: "Job successfully created" });
+});
+const updateImgPhoto = asyncHandler(async (req, res, next) => {
+  const id = req.user._id;
+  if (!req.file) {
+    const error = new Error("No File");
+    error.httpStatusCode = 400;
+    return next(error);
+  }
+  
+  const job = await userService.updateImgPhoto(id,req.file.originalname);
+
+  res.status(200).json({ message: "Job successfully created" });
+});
 module.exports = {
   getUsers,
   updateUser,
@@ -86,4 +108,6 @@ module.exports = {
   updateUserViews,
   getUserById,
   deleteUser,
+  updateImg,
+  updateImgPhoto
 };

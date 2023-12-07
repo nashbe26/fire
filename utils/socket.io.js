@@ -10,13 +10,13 @@ function joinRoom(socket, io) {
       if (!userExsit) {
         let arrayTab = [];
         arrayTab.push(socket.id);
-        console.log(userId);
+     
         onlineUser.push({ userId, userSocket: arrayTab });
       } else {
         userExsit.userSocket.push(socket.id);
       }
     }
-    console.log(onlineUser);
+
     io.emit("onlineuser", onlineUser);
   });
 }
@@ -45,19 +45,33 @@ function leaveChat(socket, io) {
 }
 
 function notification_user(socket, io) {
-  socket.on("newnotif", async (data) => {
-    const resData = data.notification.email;
+  socket.on("newnotif", async ({notification}) => {
+    console.log("dddddddddddddddddddddddsdqdsqdz45d123",notification.notifications);
+    const resData = notification.notifications.id_receiver;
     let arrF = onlineUser.find((user) => {
       return user.userId == resData;
     });
+    console.log("resData",resData);
+    console.log("resDatadsds",arrF);
 
     if (arrF)
       arrF.userSocket.map((x) => {
-        io.to(x).emit("getNotfi", { data: data.notification });
+    console.log(notification);
+        io.to(x).emit("getNotfi", { data: notification });
       });
   });
 }
 
+function notification_all_user(socket, io) {
+  socket.on("newnotifAll", async (data) => {
+
+     onlineUser.map(y=>{
+      y.userSocket.map((x) => {
+        io.to(x).emit("getNotfi", { data: data.notification });
+      })
+     });
+  });
+}
 function sendMessage(socket, io) {
   socket.on("sendMessage", ({ discussion_id, user_id, message, sender }) => {
     io.to(discussion_id).emit("message", { user_id, message });
@@ -89,4 +103,5 @@ module.exports = {
   leaveChat,
   joinNotification,
   sendNotification,
+  notification_all_user  
 };

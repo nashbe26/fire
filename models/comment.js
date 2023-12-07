@@ -9,6 +9,11 @@ const Comment = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Users",
     required: true,
+  },
+  id_receiver: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Users",
+    required: true,
   }
 },{ timestamps: true });
 

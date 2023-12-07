@@ -1,8 +1,9 @@
-const Job = require("../models/company");
+const Job = require("../models/job");
 const Comment = require("../models/comment");
 const httpError = require("http-errors");
 
-const addComment = async (postId, commentContent, userId) => {
+  const addComment = async (postId, commentContent, userId,id_receiver) => {
+    
   const jobb = await Job.findById(postId).catch((err) => {
     console.log(err);
     throw httpError(500, "Internal server err");
@@ -13,6 +14,7 @@ const addComment = async (postId, commentContent, userId) => {
   const new_comment = new Comment({
     id_owner: userId,
     commentContent: commentContent,
+    id_receiver:id_receiver
   });
   
   const savedComment = await new_comment.save().catch((err) => {
@@ -29,9 +31,9 @@ const addComment = async (postId, commentContent, userId) => {
 
   return savedComment;
 
-};
+  };
 
-const getComments = async (postId) => {
+  const getComments = async (postId) => {
     const Jobs = await Job.findById(postId)
       .populate({
         path: "comments",

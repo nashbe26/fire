@@ -1,46 +1,45 @@
 const Joi = require("joi");
 
 const jobSchema = Joi.object({
-  job_title: Joi.string().required(),
-  employ: Joi.string().required(),
-  city: Joi.string().required(),
-  country: Joi.string().required(),
-  start_date: Joi.date().required(),
-  end_date: Joi.date().required(),
-  job_description: Joi.string().required(),
+  job_title: Joi.string().allow(''),
+  employ: Joi.string().allow(''),
+  city: Joi.string().allow(''),
+  country: Joi.string().allow(''),
+  start_date: Joi.date().allow(''),
+  end_date: Joi.date().allow(''),
+  job_description: Joi.string().allow(''),
   work_here: Joi.boolean().optional(),
 });
 
 const educationSchema = Joi.object({
-  school_name: Joi.string().required(),
-  school_location: Joi.string().required(),
-  degree: Joi.string().required(),
+  school_name: Joi.string().allow(''),
+  school_location: Joi.string().allow(''),
+  degree: Joi.string().allow(''),
   field: Joi.string().allow(''),
-  grad_start_date: Joi.date(),
-  grad_end_date: Joi.date().required(),
+  grad_start_date: Joi.date().allow(''),
+  grad_end_date: Joi.date().allow(''),
 });
 
 const skillSchema = Joi.object({
-  skill: Joi.string().required(),
-  
+  skill: Joi.string().allow(''),
 });
 
 const talentSchema = Joi.object({
-  firstName: Joi.string().required(),
-  sureName: Joi.string().required(),
-  profession: Joi.string().required(),
-  password: Joi.string().required(),
-  city: Joi.string().required(),
-  country: Joi.string().required(),
-  postal_code: Joi.string().required(),
-  phone: Joi.string().required(),
-  email: Joi.string().email().required(),
+  firstName: Joi.string().allow(''),
+  lastName: Joi.string().allow(''),
+  profession: Joi.string().allow(''),
+  password: Joi.string().allow(''),
+  city: Joi.string().allow(''),
+  country: Joi.string().allow(''),
+  postal_code: Joi.string().allow(''),
+  numTel: Joi.string().allow(''),
+  email: Joi.string().email().allow(''),
   jobs: Joi.array().items(jobSchema),
   education: Joi.array().items(educationSchema),
   skills: Joi.array().items(skillSchema),
-  career_description: Joi.string().optional(),
-  additional_data: Joi.string().optional(),
-  role: Joi.string().optional()
+  career_description: Joi.string().allow(''),
+  additional_data: Joi.string().allow(''),
+  role: Joi.string().allow('')
 });
 
 module.exports = talentSchema;

@@ -8,10 +8,12 @@ const uploadImage = multer({
 
     storage: multer.diskStorage({
     destination: function (req, file, callback) {
-      callback(null,'../public/images');
-      },
-      filename: function (req, file, callback) {
-        file.originalname = Date.now()+'_'+file.originalname.replaceAll(' ', '_'); 
+      console.log('./public/images');
+      callback(null,'./public/images/');
+    },
+    filename: function (req, file, callback) {
+      file.originalname = Date.now()+'_'+file.originalname; 
+        console.log('../public/images/'+file.originalname );
         callback(null,file.originalname)},
     })
 

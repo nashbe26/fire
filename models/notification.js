@@ -7,8 +7,7 @@ const Notification = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["new_job","like_job", "comment_job","submit_job","end_job"],
-      required: true,
+      enum: ["new_job","like_job", "comment_job","submit_job","end_job","all","one"],
     },
     job_id: {
       type: mongoose.Schema.Types.ObjectId,
@@ -16,22 +15,19 @@ const Notification = new mongoose.Schema(
     },
     id_owner: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Users",
-      required: true,
+      ref: "User",
+
     },
     id_receiver: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Users",
+      ref: "User",
     },
     
     is_checked: {
       type: Boolean,
       default: false,
     },
-    contract_type: {
-        type: Boolean,
-        default: false,
-    }
+
   },
   { timestamps: true }
 );

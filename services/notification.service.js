@@ -1,4 +1,5 @@
 const Notification = require("../models/notification");
+const User = require("../models/user");
 const httpError = require("http-errors");
 
 const deleteNotification = async (notificationId, userId) => {
@@ -34,7 +35,7 @@ const seenNotif = async (userId) => {
   return notifications;
 };
 const getNotifications = async (userId) => {
-  const notifications = await Notification.find({ id_receiver: userId }).catch(
+  const notifications = await Notification.find({ id_receiver: userId }).populate('id_owner').catch(
     (err) => {
       console.log(err);
       throw httpError(500, "Internal server err");
@@ -44,12 +45,60 @@ const getNotifications = async (userId) => {
 };
 
 const createNotification = async ({
-  owner,
-  receiver,
-  description,
+  id_owner,
+  id_receiver,
+  content,
+
   job_id,
   type,
 }) => {
+  try{
+    console.log({
+      id_owner,
+      id_receiver,
+      content,
+    
+      job_id,
+      type,
+    });
+    if(type == "all"){
+      const users = await User.find();
+      console.log({
+        id_owner,
+        id_receiver,
+        content,
+      
+        job_id,
+        type,
+      });
+      let notification
+      users.map(async x=>{
+        notification = new Notification({
+          id_owner: id_owner,
+          id_receiver: x._id,
+          description:content,
+          type,
+          job_id,
+        });
+        notification.save();
+      })
+      return notification;
+    }else{
+      const notification = new Notification({
+        id_owner: id_owner,
+        id_receiver:id_receiver,
+        description:content,
+        type,
+        job_id,
+      });
+      notification.save();
+      return notification;
+    }
+    
+  }catch(err){
+    console.log(err);
+    return err
+  }
   /*switch (type) {
     case "new_job":
       description =
@@ -82,16 +131,7 @@ const createNotification = async ({
       break;
   }*/
 
-  const notification = await Notification.create({
-    id_owner: owner,
-    id_receiver: receiver,
-    description,
-    type,
-    job_id,
-  });
-  notification.save();
 
-  return notification;
 };
 
 module.exports = {

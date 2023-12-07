@@ -20,10 +20,13 @@ module.exports = (req, res, next) => {
       throw httpError(401, "failed to verify");
     }
 
-    req.user = data.user;
+    console.log(data)
+    
+    req.user = data.user.user;
     req.role = data.user.user.role;
-
+    console.log(req.user,"ddddddddddddddddd")
     next();
+
   } catch (e) {
     throw new httpError(401, "Unauthorized");
   }
